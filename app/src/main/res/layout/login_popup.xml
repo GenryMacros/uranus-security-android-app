@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loginPopupContainer"
+    android:background="@color/black"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="326dp"
+        android:background="@color/white"
+        android:layout_height="125dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12sp"
+            android:paddingTop="10sp"
+            android:text="@string/login_popup_title"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/login_popup_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15sp"
+            android:paddingTop="40dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/popup_ok"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="52dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="70dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/ok"
+            android:textColor="@color/login_color" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
