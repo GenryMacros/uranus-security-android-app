@@ -2,7 +2,7 @@ package network.interfaces
 import com.google.gson.annotations.SerializedName
 
 data class LoginData(
-    val username: String,
+    val login: String,
     val password: String)
 
 
@@ -14,7 +14,7 @@ data class LoginResponseView(
 data class LoginResponse(
     @SerializedName("user_id")
     val id: Int? = null,
-    @SerializedName("user_name")
+    @SerializedName("public_key")
     val public_key: String? = null,
     @SerializedName("auth_token")
     val auth_token: String? = null,

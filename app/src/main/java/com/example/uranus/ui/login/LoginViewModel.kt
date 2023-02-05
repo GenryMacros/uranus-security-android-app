@@ -20,13 +20,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     val loginResult: LiveData<LoginResult> = _loginResult
 
     fun login(username: String, password: String) {
-        val result = loginRepository.login(username, password)
-        if (result.error != null) {
-            _loginResult.value = LoginResult(error = result.error)
-        } else {
-            _loginResult.value =
-                LoginResult(success = LoggedInUserView(displayName = result.displayName))
-        }
+        loginRepository.login(username, password, _loginResult)
     }
 
     fun loginDataChanged(username: String, password: String) {

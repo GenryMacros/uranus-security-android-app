@@ -13,10 +13,10 @@ import retrofit2.http.Body
 
 interface MainServerApi {
     @POST("/users/login")
-    fun login(@Body loginData: LoginData): Result<LoginResponse>
+    fun login(@Body loginData: LoginData): Call<LoginResponse>
 
     companion object {
-        private const val apiAddress = "http://10.0.2.2:8015/"
+        private const val apiAddress = "http://10.0.2.2:8010/"
         fun getApi(): MainServerApi? {
             return try {
                 val retrofit = Retrofit.Builder()
