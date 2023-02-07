@@ -55,12 +55,12 @@ class LoginRepository {
             ) {
                 val responseObj = response.body()
                 if (responseObj?.reason != null) {
-                    LoginResponseView(error = responseObj.reason)
+                    loginResult.value = LoginResult(error = responseObj.reason)
                 } else {
                     val parsedResponse = secretsHandler.parseToken(responseObj?.auth_token ?: "",
                         responseObj?.public_key ?: "")
                     if (parsedResponse == null) {
-                        LoginResponseView(error = "Server was corrupted")
+                        loginResult.value = LoginResult(error = "Server was corrupted")
                     } else {
                         user = responseObj
                         val displayName = "${parsedResponse.first_name} ${parsedResponse.last_name}"
