@@ -1,7 +1,6 @@
 package network
 
-import network.interfaces.LoginData
-import network.interfaces.LoginResponse
+import network.interfaces.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -14,6 +13,9 @@ import retrofit2.http.Body
 interface MainServerApi {
     @POST("/users/login")
     fun login(@Body loginData: LoginData): Call<LoginResponse>
+
+    @POST("/users/register")
+    fun signup(@Body signupData: SignupDataRequest): Call<SignupResponse>
 
     companion object {
         private const val apiAddress = "http://10.0.2.2:8010/"

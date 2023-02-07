@@ -1,10 +1,11 @@
 package com.example.uranus.ui.login
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,8 @@ import android.widget.Toast
 import com.example.uranus.databinding.ActivityLoginBinding
 
 import com.example.uranus.R
+import com.example.uranus.ui.general.PopUp
+import com.example.uranus.ui.signup.SignupActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -30,7 +33,10 @@ class LoginActivity : AppCompatActivity() {
         val username = binding.username
         val password = binding.password
         val login = binding.login
+        val signup = binding.signup
         val loading = binding.loading
+
+        login.isEnabled = false
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -42,10 +48,10 @@ class LoginActivity : AppCompatActivity() {
             login.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
+                username.error = getString(loginState.usernameError!!)
             }
             if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
+                password.error = getString(loginState.passwordError!!)
             }
         })
 
@@ -54,9 +60,10 @@ class LoginActivity : AppCompatActivity() {
 
             loading.visibility = View.GONE
             if (loginResult.error != null) {
-                LoginPopUp.onButtonShowPopupWindowClick(this,
-                                                        this.findViewById(R.id.container),
-                                                        loginResult.error)
+                PopUp.onButtonShowPopupWindowClick(this,
+                                                   this.findViewById(R.id.container),
+                                                   loginResult.error,
+                                                   "Failed to login")
             }
             if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
@@ -97,6 +104,10 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
+
+            signup.setOnClickListener {
+                SignupActivity.startActivity(this.context)
+            }
         }
     }
 
@@ -109,6 +120,13 @@ class LoginActivity : AppCompatActivity() {
             "$welcome $displayName",
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    companion object {
+        fun startActivity(context: Context) {
+            val intent = Intent(context, LoginActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 }
 

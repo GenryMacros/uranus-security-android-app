@@ -54,18 +54,32 @@ class LoginRepository {
                 response: Response<LoginResponse>
             ) {
                 val responseObj = response.body()
-                if (responseObj?.reason != null) {
-                    loginResult.value = LoginResult(error = responseObj.reason)
-                } else {
-                    val parsedResponse = secretsHandler.parseToken(responseObj?.auth_token ?: "",
-                        responseObj?.public_key ?: "")
-                    if (parsedResponse == null) {
-                        loginResult.value = LoginResult(error = "Server was corrupted")
+                if (responseObj != null) {
+                    if (responseObj.reason != null) {
+                        loginResult.value = LoginResult(error = responseObj.reason)
                     } else {
-                        user = responseObj
-                        val displayName = "${parsedResponse.first_name} ${parsedResponse.last_name}"
-                        LoginResponseView(displayName = displayName)
-                        loginResult.value = LoginResult(success = LoggedInUserView(displayName = displayName))
+                        val parsedResponse = secretsHandler.parseToken(
+                            responseObj?.auth_token ?: "",
+                            responseObj?.public_key ?: ""
+                        )
+                        if (parsedResponse == null) {
+                            loginResult.value = LoginResult(error = "Server was corrupted")
+                        } else {
+                            user = responseObj
+                            val displayName =
+                                "${parsedResponse.first_name} ${parsedResponse.last_name}"
+                            LoginResponseView(displayName = displayName)
+                            loginResult.value =
+                                LoginResult(success = LoggedInUserView(displayName = displayName))
+                        }
+                    }
+                } else{
+                    when {
+                        response.code() == 404 -> {
+                            loginResult.value = LoginResult(error = "Invalid login data")
+                        } else -> {
+                        loginResult.value = LoginResult(error = "Server in bad state")
+                        }
                     }
                 }
             }

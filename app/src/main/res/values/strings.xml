@@ -1,17 +1,28 @@
 <resources>
     <string name="app_name">Uranus</string>
-    <!-- Strings related to login -->
+    <string name="project_name">URANUS</string>
     <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_first_name"> First name </string>
+    <string name="prompt_last_name"> Last name </string>
+    <string name="prompt_email"> Email </string>
+    <string name="prompt_phone"> Phone </string>
+    <string name="prompt_telegram"> Telegram </string>
     <string name="action_sign_up">Sign up</string>
     <string name="action_log_in">Log in</string>
     <string name="welcome">Welcome!</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Not a valid password</string>
+    <string name="invalid_first_name">Not a valid first name</string>
+    <string name="invalid_last_name">Not a valid last name</string>
+    <string name="invalid_phone">Not a valid phone number</string>
+    <string name="invalid_email">Not a valid email</string>
+    <string name="invalid_telegram">Not a valid telegram tag</string>
     <string name="stay_logged">Stay logged in</string>
     <string name="login_failed">"Login failed"</string>
     <string name="plug_error"> "Plug Error"</string>
     <string name="cant_connect_error"> "Can't establish connection with server"</string>
     <string name="login_popup_title"> Failed to login</string>
     <string name="ok"> OK </string>
+    <string name="terms_of_conditions"> I agree to the <a href="https://www.google.pl/">Terms of Conditions </a></string>
 </resources>
