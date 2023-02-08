@@ -21,7 +21,9 @@ data class LoginResponse(
     @SerializedName("refresh_token")
     val refresh_token: String? = null,
     @SerializedName("reason")
-    val reason: String? = null
+    val reason: String? = null,
+    @SerializedName("success")
+    val success: Boolean? = null
 )
 
 data class LoginResponseBody(

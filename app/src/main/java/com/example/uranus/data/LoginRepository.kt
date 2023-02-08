@@ -1,13 +1,16 @@
 package com.example.uranus.data
 
 import androidx.lifecycle.MutableLiveData
+import com.beust.klaxon.Klaxon
 import com.example.uranus.ui.login.LoggedInUserView
 import com.example.uranus.ui.login.LoginResult
+import com.example.uranus.ui.signup.SignupResult
 import com.example.uranus.utils.SecretsHandler
 import network.MainServerApi
 import network.interfaces.LoginData
 import network.interfaces.LoginResponse
 import network.interfaces.LoginResponseView
+import network.interfaces.SignupResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -73,12 +76,18 @@ class LoginRepository {
                                 LoginResult(success = LoggedInUserView(displayName = displayName))
                         }
                     }
-                } else{
-                    when {
-                        response.code() == 404 -> {
-                            loginResult.value = LoginResult(error = "Invalid login data")
-                        } else -> {
-                        loginResult.value = LoginResult(error = "Server in bad state")
+                } else {
+                    if (response.errorBody() == null) {
+                        loginResult.value = LoginResult(error = "Server was corrupted")
+                    } else {
+                        var errorBody = response.errorBody()!!.byteStream().toString()
+                        errorBody = errorBody.replace("[text=", "")
+                            .replace("\\n].inputStream()", "")
+                        val loginResponse = Klaxon().parse<LoginResponse>(errorBody)
+                        if (loginResponse != null) {
+                            loginResult.value = LoginResult(error = loginResponse.reason)
+                        } else {
+                            loginResult.value = LoginResult(error = "Unknown server error")
                         }
                     }
                 }

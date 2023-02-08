@@ -1,6 +1,7 @@
 package com.example.uranus.data
 
 import androidx.lifecycle.MutableLiveData
+import com.beust.klaxon.Klaxon
 import com.example.uranus.ui.signup.SignupResult
 import com.example.uranus.ui.signup.interfaces.SignupData
 import network.MainServerApi
@@ -35,7 +36,19 @@ class SignupRepository {
                             signupResult.value = SignupResult(error = null)
                         }
                     } else {
-                        signupResult.value = SignupResult(error = "Server was corrupted")
+                        if (response.errorBody() == null) {
+                            signupResult.value = SignupResult(error = "Server was corrupted")
+                        } else {
+                            var errorBody = response.errorBody()!!.byteStream().toString()
+                            errorBody = errorBody.replace("[text=", "")
+                                .replace("\\n].inputStream()", "")
+                            val signupResponse = Klaxon().parse<SignupResponse>(errorBody)
+                            if (signupResponse != null) {
+                                signupResult.value = SignupResult(error = signupResponse.reason)
+                            } else {
+                                signupResult.value = SignupResult(error = "Unknown server error")
+                            }
+                        }
                     }
                 }
             }
