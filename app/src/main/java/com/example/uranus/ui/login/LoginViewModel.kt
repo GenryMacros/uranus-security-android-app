@@ -24,16 +24,23 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     }
 
     fun loginDataChanged(username: String, password: String) {
-        val currentState = LoginFormState(isDataValid = true)
+        var isDataValid = true
+        var usernameError: Int? = null
+        var passwordError: Int? = null
+
         if (!isUserNameValid(username)) {
-            currentState.isDataValid = false
-            currentState.usernameError = R.string.invalid_username
+            isDataValid = false
+            usernameError = R.string.invalid_username
         }
         if (!isPasswordValid(password)) {
-            currentState.isDataValid = false
-            currentState.passwordError = R.string.invalid_password
+            isDataValid = false
+            passwordError = R.string.invalid_password
         }
-        _loginForm.value = currentState
+        _loginForm.value = LoginFormState(
+            usernameError=usernameError,
+            passwordError=passwordError,
+            isDataValid=isDataValid
+        )
     }
 
     // A placeholder username validation check

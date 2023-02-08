@@ -8,7 +8,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -34,11 +33,7 @@ class SignupActivity : AppCompatActivity() {
 
         val username = binding.username
         val password = binding.password
-        val firstName = binding.firstName
-        val lastName = binding.lastName
         val email = binding.email
-        val telegram = binding.telegram
-        val phone = binding.phone
         val terms = binding.terms
         val signup = binding.signup
         val loading = binding.loading
@@ -60,20 +55,8 @@ class SignupActivity : AppCompatActivity() {
             if (signupState.passwordError != null) {
                 password.error = getString(signupState.passwordError!!)
             }
-            if (signupState.firstNameError != null) {
-                firstName.error = getString(signupState.firstNameError!!)
-            }
-            if (signupState.lastNameError != null) {
-                lastName.error = getString(signupState.lastNameError!!)
-            }
             if (signupState.emailError != null) {
                 email.error = getString(signupState.emailError!!)
-            }
-            if (signupState.telegramError != null) {
-                telegram.error = getString(signupState.telegramError!!)
-            }
-            if (signupState.phoneError != null) {
-                phone.error = getString(signupState.phoneError!!)
             }
         })
 
@@ -82,10 +65,9 @@ class SignupActivity : AppCompatActivity() {
 
             loading.visibility = View.GONE
             if (signupResult.error != null) {
-                val error = signupResult.error
                 PopUp.onButtonShowPopupWindowClick(this,
-                                                        this.findViewById(R.id.container),
-                                                         error,
+                                                        this.findViewById(R.id.signup_container),
+                                                        signupResult.error,
                                                 "Failed to signup")
             }
             if (signupResult.error == null) {
@@ -99,11 +81,7 @@ class SignupActivity : AppCompatActivity() {
                 SignupData(
                     username.text.toString(),
                     password.text.toString(),
-                    firstName.text.toString(),
-                    lastName.text.toString(),
-                    email.text.toString(),
-                    phone.text.toString(),
-                    telegram.text.toString())
+                    email.text.toString())
             )
         }
 
@@ -113,29 +91,8 @@ class SignupActivity : AppCompatActivity() {
                     SignupData(
                     username.text.toString(),
                     password.text.toString(),
-                    firstName.text.toString(),
-                    lastName.text.toString(),
-                    email.text.toString(),
-                    phone.text.toString(),
-                    telegram.text.toString())
+                    email.text.toString())
                 )
-            }
-
-            setOnEditorActionListener { _, actionId, _ ->
-                when (actionId) {
-                    EditorInfo.IME_ACTION_DONE ->
-                        signupViewModel.signup(
-                            SignupData(
-                                username.text.toString(),
-                                password.text.toString(),
-                                firstName.text.toString(),
-                                lastName.text.toString(),
-                                email.text.toString(),
-                                phone.text.toString(),
-                                telegram.text.toString())
-                        )
-                }
-                false
             }
 
             signup.setOnClickListener {
@@ -143,11 +100,7 @@ class SignupActivity : AppCompatActivity() {
                 signupViewModel.signup(SignupData(
                     username.text.toString(),
                     password.text.toString(),
-                    firstName.text.toString(),
-                    lastName.text.toString(),
-                    email.text.toString(),
-                    phone.text.toString(),
-                    telegram.text.toString())
+                    email.text.toString())
                 )
             }
 

@@ -23,39 +23,30 @@ class SignupViewModel(private val signupRepository: SignupRepository) : ViewMode
     }
 
     fun signupDataChanged(signupData: SignupData) {
-        val currentState = SignupFormState(isDataValid = true)
+        var isDataValid = true
+        var usernameError: Int? = null
+        var passwordError: Int? = null
+        var emailError: Int? = null
+
         if (!isUsernameValid(signupData.username)) {
-            currentState.isDataValid = false
-            currentState.usernameError =R.string.invalid_username
+            isDataValid = false
+            usernameError = R.string.invalid_username
         }
         if (!isPasswordValid(signupData.password)) {
-            currentState.isDataValid = false
-            currentState.passwordError = R.string.invalid_password
-        }
-        if (!isFirstNameValid(signupData.first_name)) {
-            currentState.isDataValid = false
-            currentState.firstNameError = R.string.invalid_first_name
-        }
-        if (!isLastNameValid(signupData.last_name)) {
-            currentState.isDataValid = false
-            currentState.lastNameError = R.string.invalid_last_name
-        }
-        if (!isPhoneValid(signupData.phone)) {
-            currentState.isDataValid = false
-            currentState.phoneError = R.string.invalid_phone
+            isDataValid = false
+            passwordError = R.string.invalid_password
         }
         if (!isEmailValid(signupData.email)) {
-            currentState.isDataValid = false
-            currentState.emailError = R.string.invalid_email
+            isDataValid = false
+            emailError = R.string.invalid_email
         }
-        if (!isTelegramValid(signupData.telegram)) {
-            currentState.isDataValid = false
-            currentState.telegramError = R.string.invalid_telegram
-        }
-        _signupForm.value = currentState
+        _signupForm.value = SignupFormState(
+            usernameError = usernameError,
+            emailError = emailError,
+            passwordError = passwordError,
+            isDataValid = isDataValid)
     }
 
-    // A placeholder username validation check
     private fun isUsernameValid(username: String): Boolean {
         return if (username.contains('@')) {
             Patterns.EMAIL_ADDRESS.matcher(username).matches()
@@ -70,22 +61,6 @@ class SignupViewModel(private val signupRepository: SignupRepository) : ViewMode
         } else {
             false
         }
-    }
-
-    private fun isTelegramValid(telegram: String): Boolean {
-        return telegram.length in 3..20 && telegram[0] == '@'
-    }
-
-    private fun isPhoneValid(phone: String): Boolean {
-        return Patterns.PHONE.matcher(phone).matches()
-    }
-
-    private fun isFirstNameValid(firstName: String): Boolean {
-        return firstName.length in 2..15
-    }
-
-    private fun isLastNameValid(lastName: String): Boolean {
-        return lastName.length in 4..20
     }
 
     private fun isPasswordValid(password: String): Boolean {

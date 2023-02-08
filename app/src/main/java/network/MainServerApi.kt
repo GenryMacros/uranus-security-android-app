@@ -14,7 +14,7 @@ interface MainServerApi {
     @POST("/users/login")
     fun login(@Body loginData: LoginData): Call<LoginResponse>
 
-    @POST("/users/register")
+    @POST("/users/signup")
     fun signup(@Body signupData: SignupDataRequest): Call<SignupResponse>
 
     companion object {

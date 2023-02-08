@@ -59,8 +59,8 @@ class LoginRepository {
                         loginResult.value = LoginResult(error = responseObj.reason)
                     } else {
                         val parsedResponse = secretsHandler.parseToken(
-                            responseObj?.auth_token ?: "",
-                            responseObj?.public_key ?: ""
+                            responseObj.auth_token ?: "",
+                            responseObj.public_key ?: ""
                         )
                         if (parsedResponse == null) {
                             loginResult.value = LoginResult(error = "Server was corrupted")
