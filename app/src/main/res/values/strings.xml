@@ -18,6 +18,7 @@
     <string name="invalid_phone">Not a valid phone number</string>
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_telegram">Not a valid telegram tag</string>
+    <string name="invalid_token">Invalid code</string>
     <string name="stay_logged">Stay logged in</string>
     <string name="login_failed">"Login failed"</string>
     <string name="plug_error"> "Plug Error"</string>
@@ -25,4 +26,8 @@
     <string name="login_popup_title"> Failed to login</string>
     <string name="ok"> OK </string>
     <string name="terms_of_conditions"> I agree to the <a href="https://www.google.pl/">Terms of Conditions </a></string>
+    <string name="email_verification"> Email Verification </string>
+    <string name="email_verification_message"> We\'ve sent confirmation code to your email. Please paste it below </string>
+    <string name="confirm"> Confirm </string>
+    <string name="verification_code">Verification code</string>
 </resources>

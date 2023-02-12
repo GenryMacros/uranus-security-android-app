@@ -1,17 +1,22 @@
 package network.interfaces
+
+import com.example.uranus.ui.confirmation.interfaces.ConfirmationData
 import com.google.gson.annotations.SerializedName
 
-data class LoginData(
-    val login: String,
-    val password: String)
+class ConfirmationDataRequest(
+    val token: String
+) {
+    companion object {
+        fun createFromUI(uieq: ConfirmationData) : ConfirmationDataRequest {
+            return ConfirmationDataRequest(
+                token = uieq.token,
+            )
+        }
+    }
+}
 
 
-data class LoginResponseView(
-    val displayName: String = "",
-    val error: String? = null
-)
-
-data class LoginResponse(
+data class ConfirmationResponse(
     @SerializedName("user_id")
     val id: Int? = null,
     @SerializedName("public_key")
@@ -24,10 +29,4 @@ data class LoginResponse(
     val reason: String? = null,
     @SerializedName("success")
     val success: Boolean? = null
-)
-
-data class LoginResponseBody(
-    val id: Int,
-    val email: String,
-    val expiration_date: Int
 )

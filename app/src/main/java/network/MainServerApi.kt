@@ -17,6 +17,9 @@ interface MainServerApi {
     @POST("/users/signup")
     fun signup(@Body signupData: SignupDataRequest): Call<SignupResponse>
 
+    @POST("/users/confirm")
+    fun confirm(@Body confirmationData: ConfirmationDataRequest): Call<LoginResponse>
+
     companion object {
         private const val apiAddress = "http://10.0.2.2:8010/"
         fun getApi(): MainServerApi? {

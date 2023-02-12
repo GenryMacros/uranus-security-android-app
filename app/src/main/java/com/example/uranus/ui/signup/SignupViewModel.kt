@@ -64,6 +64,6 @@ class SignupViewModel(private val signupRepository: SignupRepository) : ViewMode
     }
 
     private fun isPasswordValid(password: String): Boolean {
-        return password.length in 6..19
+        return password.length in 10..19
     }
 }

@@ -8,14 +8,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.uranus.R
 import com.example.uranus.databinding.ActivitySignupBinding
+import com.example.uranus.ui.confirmation.ConfirmationActivity
 import com.example.uranus.ui.general.PopUp
-import com.example.uranus.ui.login.LoginActivity
 import com.example.uranus.ui.signup.interfaces.SignupData
 
 
@@ -49,13 +48,13 @@ class SignupActivity : AppCompatActivity() {
             signup.isEnabled = signupState.isDataValid && terms.isChecked
 
             if (signupState.usernameError != null) {
-                username.error = getString(signupState.usernameError!!)
+                username.error = getString(signupState.usernameError)
             }
             if (signupState.passwordError != null) {
-                password.error = getString(signupState.passwordError!!)
+                password.error = getString(signupState.passwordError)
             }
             if (signupState.emailError != null) {
-                email.error = getString(signupState.emailError!!)
+                email.error = getString(signupState.emailError)
             }
         })
 
@@ -70,7 +69,7 @@ class SignupActivity : AppCompatActivity() {
                                                 "Failed to signup")
             }
             if (signupResult.error == null) {
-                goBackToLogin()
+                toConfirmation()
             }
             setResult(Activity.RESULT_OK)
         })
@@ -109,13 +108,8 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    private fun goBackToLogin() {
-        Toast.makeText(
-            applicationContext,
-            "Signup was successful",
-            Toast.LENGTH_LONG
-        ).show()
-        LoginActivity.startActivity(this)
+    private fun toConfirmation() {
+        ConfirmationActivity.startActivity(this)
     }
 
     companion object {

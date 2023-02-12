@@ -69,8 +69,7 @@ class LoginRepository {
                             loginResult.value = LoginResult(error = "Server was corrupted")
                         } else {
                             user = responseObj
-                            val displayName =
-                                "${parsedResponse.first_name} ${parsedResponse.last_name}"
+                            val displayName = parsedResponse.email
                             LoginResponseView(displayName = displayName)
                             loginResult.value =
                                 LoginResult(success = LoggedInUserView(displayName = displayName))
