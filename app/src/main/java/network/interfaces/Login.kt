@@ -29,5 +29,5 @@ data class LoginResponse(
 data class LoginResponseBody(
     val id: Int,
     val email: String,
-    val expiration_date: Int
+    val expiration_date: Float
 )

@@ -109,7 +109,7 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun toConfirmation() {
-        ConfirmationActivity.startActivity(this)
+        signupViewModel.signupResult.value!!.id?.let { ConfirmationActivity.startActivity(this, it) }
     }
 
     companion object {

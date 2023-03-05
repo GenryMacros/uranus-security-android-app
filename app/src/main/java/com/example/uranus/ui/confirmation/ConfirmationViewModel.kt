@@ -40,4 +40,5 @@ class ConfirmationViewModel(private val confirmationRepository: ConfirmationRepo
     private fun isTokenValid(token: String): Boolean {
         return true
     }
+
 }

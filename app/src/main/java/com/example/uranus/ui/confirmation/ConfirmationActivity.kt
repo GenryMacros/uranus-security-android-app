@@ -30,6 +30,8 @@ class ConfirmationActivity : AppCompatActivity() {
         binding = ActvityEmailCofirmationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val clientId = intent.getIntExtra("client_id", -1)
+
         val token = binding.codeField
         val confirmButton = binding.confirmButton
         val loading = binding.loading
@@ -67,7 +69,7 @@ class ConfirmationActivity : AppCompatActivity() {
 
         token.afterTextChanged {
             confirmationViewModel.confirmationDataChanged(
-                ConfirmationData(token.text.toString())
+                ConfirmationData(token.text.toString(), clientId)
             )
         }
 
@@ -75,7 +77,8 @@ class ConfirmationActivity : AppCompatActivity() {
             loading.visibility = View.VISIBLE
             confirmationViewModel.confirm(
                 ConfirmationData(
-                    token=token.text.toString()
+                    token=token.text.toString(),
+                    id=clientId
             )
             )
         }
@@ -93,8 +96,9 @@ class ConfirmationActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun startActivity(context: Context) {
+        fun startActivity(context: Context, client_id: Int) {
             val intent = Intent(context, ConfirmationActivity::class.java)
+            intent.putExtra("client_id", client_id)
             context.startActivity(intent)
         }
     }

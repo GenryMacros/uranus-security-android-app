@@ -4,12 +4,14 @@ import com.example.uranus.ui.confirmation.interfaces.ConfirmationData
 import com.google.gson.annotations.SerializedName
 
 class ConfirmationDataRequest(
-    val token: String
+    val token: String,
+    val id: Int
 ) {
     companion object {
         fun createFromUI(uieq: ConfirmationData) : ConfirmationDataRequest {
             return ConfirmationDataRequest(
                 token = uieq.token,
+                id=uieq.id
             )
         }
     }

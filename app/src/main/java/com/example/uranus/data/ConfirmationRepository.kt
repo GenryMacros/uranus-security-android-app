@@ -15,14 +15,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ConfirmationRepository {
-
+class ConfirmationRepository{
     var secretsHandler: SecretsHandler = SecretsHandler()
 
-    fun confirm(confiramationData: ConfirmationData, confirmationResult: MutableLiveData<ConfirmationResult>
-    ) {
-        println(confiramationData.token)
-        val apiRequestResult = MainServerApi.getApi()?.confirm(ConfirmationDataRequest.createFromUI(confiramationData))
+    fun confirm(confiramationData: ConfirmationData, confirmationResult: MutableLiveData<ConfirmationResult>)
+    {
+        val apiRequestResult = MainServerApi.getApi()?.confirm(confiramationData.id,
+                                                               confiramationData.token)
         apiRequestResult?.enqueue(object: Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                 confirmationResult.value = ConfirmationResult(error = "Can't establish connection with server")

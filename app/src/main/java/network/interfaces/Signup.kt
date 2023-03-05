@@ -23,6 +23,8 @@ data class SignupDataRequest(
 data class SignupResponse(
     @SerializedName("success")
     val success: Boolean,
+    @SerializedName("id")
+    val id: Int?,
     @SerializedName("reason")
     val reason: String? = null
 )

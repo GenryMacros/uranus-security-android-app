@@ -33,7 +33,7 @@ class SignupRepository {
                         if (!responseObj.success) {
                             signupResult.value = SignupResult(error = "Signup was unsuccessful")
                         } else {
-                            signupResult.value = SignupResult(error = null)
+                            signupResult.value = SignupResult(id=responseObj.id)
                         }
                     } else {
                         if (response.errorBody() == null) {
