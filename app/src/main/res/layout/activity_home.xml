@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/home_container"
+    android:background="@color/main_color">
+
+    <ImageView
+        android:id="@+id/cameras_line"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="530dp"
+        android:background="@color/login_text_color"
+        android:backgroundTint="@color/login_text_color"
+        android:backgroundTintMode="add"
+        android:scaleType="fitXY"
+        android:tint="@color/login_text_color"
+        app:layout_constraintBottom_toBottomOf="@+id/footer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cameras_text"
+        app:srcCompat="@android:drawable/bottom_bar" />
+
+    <ImageView
+        android:id="@+id/footer"
+        android:layout_width="411dp"
+        android:layout_height="93dp"
+        android:layout_marginTop="640dp"
+        android:background="@color/login_color"
+        android:backgroundTint="@color/login_color"
+        android:backgroundTintMode="add"
+        android:scaleType="fitXY"
+        android:tint="@color/login_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/bottom_bar" />
+
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="50dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="350dp"
+        android:background="@drawable/einstellungen"
+        app:layout_constraintBottom_toBottomOf="@+id/header"
+        app:layout_constraintEnd_toEndOf="@+id/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/profile"
+        android:layout_width="48dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="361dp"
+        android:background="@drawable/login_image"
+        app:layout_constraintBottom_toBottomOf="@+id/header"
+        app:layout_constraintEnd_toEndOf="@+id/header"
+        app:layout_constraintStart_toStartOf="@+id/header"
+        app:layout_constraintTop_toTopOf="@+id/header" />
+
+    <ImageView
+        android:id="@+id/header"
+        android:layout_width="409dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="18dp"
+        android:background="@color/login_color"
+        android:backgroundTint="@color/login_color"
+        android:backgroundTintMode="add"
+        android:scaleType="fitXY"
+        android:tint="@color/login_color"
+        app:layout_constraintBottom_toTopOf="@+id/cameras_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/bottom_bar" />
+
+    <TextView
+        android:id="@+id/cameras_text"
+        android:layout_width="113dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="306dp"
+        android:layout_marginBottom="90dp"
+        android:text="Cameras"
+        android:textColor="@color/login_text_color_2"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/cameras_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/add"
+        android:layout_width="88dp"
+        android:layout_height="94dp"
+        android:layout_marginTop="434dp"
+        android:background="@drawable/plus"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/footer"
+        app:layout_constraintTop_toBottomOf="@+id/cameras_line" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

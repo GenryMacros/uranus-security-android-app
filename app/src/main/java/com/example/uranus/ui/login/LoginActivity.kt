@@ -17,6 +17,7 @@ import com.example.uranus.databinding.ActivityLoginBinding
 
 import com.example.uranus.R
 import com.example.uranus.ui.general.PopUp
+import com.example.uranus.ui.home_page.HomeActivity
 import com.example.uranus.ui.signup.SignupActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -65,13 +66,12 @@ class LoginActivity : AppCompatActivity() {
                                                    loginResult.error,
                                                    "Failed to login")
             }
-            if (loginResult.success != null) {
+            else if (loginResult.success != null) {
                 updateUiWithUser(loginResult.success)
+                setResult(Activity.RESULT_OK)
+                HomeActivity.startActivity(this)
+                finish()
             }
-            setResult(Activity.RESULT_OK)
-
-            //Complete and destroy login activity once successful
-            //finish()
         })
 
         username.afterTextChanged {

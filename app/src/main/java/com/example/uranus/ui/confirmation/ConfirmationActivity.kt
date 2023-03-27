@@ -17,6 +17,7 @@ import com.example.uranus.R
 import com.example.uranus.databinding.ActvityEmailCofirmationBinding
 import com.example.uranus.ui.confirmation.interfaces.ConfirmationData
 import com.example.uranus.ui.general.PopUp
+import com.example.uranus.ui.home_page.HomeActivity
 import com.example.uranus.ui.login.LoggedInUserView
 
 class ConfirmationActivity : AppCompatActivity() {
@@ -87,12 +88,12 @@ class ConfirmationActivity : AppCompatActivity() {
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
-        // TODO : start main activity
         Toast.makeText(
             applicationContext,
             "$welcome $displayName",
             Toast.LENGTH_LONG
         ).show()
+        HomeActivity.startActivity(this)
     }
 
     companion object {
