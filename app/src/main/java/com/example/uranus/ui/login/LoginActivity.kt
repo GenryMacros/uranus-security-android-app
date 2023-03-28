@@ -18,6 +18,7 @@ import com.example.uranus.databinding.ActivityLoginBinding
 import com.example.uranus.R
 import com.example.uranus.ui.general.PopUp
 import com.example.uranus.ui.home_page.HomeActivity
+import com.example.uranus.ui.home_page.HomeAuthData
 import com.example.uranus.ui.signup.SignupActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -67,9 +68,14 @@ class LoginActivity : AppCompatActivity() {
                                                    "Failed to login")
             }
             else if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
                 setResult(Activity.RESULT_OK)
-                HomeActivity.startActivity(this)
+                val authData = HomeAuthData(
+                    public_key = loginViewModel.loginResult.value?.public_key,
+                    auth_token = loginViewModel.loginResult.value?.auth_token,
+                    refresh_token = loginViewModel.loginResult.value?.refresh_token,
+                    user_id = loginViewModel.loginResult.value?.user_id
+                )
+                HomeActivity.startActivity(this, authData)
                 finish()
             }
         })
@@ -109,17 +115,6 @@ class LoginActivity : AppCompatActivity() {
                 SignupActivity.startActivity(this.context)
             }
         }
-    }
-
-    private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        // TODO : initiate successful logged in experience
-        Toast.makeText(
-            applicationContext,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
-        ).show()
     }
 
     companion object {

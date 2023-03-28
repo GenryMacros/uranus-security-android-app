@@ -1,22 +1,16 @@
 package com.example.uranus.ui.home_page
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.uranus.R
 import com.example.uranus.databinding.ActivityHomeBinding
-import com.example.uranus.databinding.ActivitySignupBinding
-import com.example.uranus.ui.confirmation.ConfirmationActivity
-import com.example.uranus.ui.general.PopUp
-import com.example.uranus.ui.signup.interfaces.SignupData
+import com.example.uranus.ui.login.LoginResult
 
 
 class HomeActivity : AppCompatActivity() {
@@ -39,8 +33,12 @@ class HomeActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun startActivity(context: Context) {
+        fun startActivity(context: Context, login_data: HomeAuthData) {
             val intent = Intent(context, HomeActivity::class.java)
+            intent.putExtra("public_key", login_data.public_key)
+            intent.putExtra("auth_token", login_data.auth_token)
+            intent.putExtra("refresh_token", login_data.refresh_token)
+            intent.putExtra("user_id", login_data.user_id)
             context.startActivity(intent)
         }
     }

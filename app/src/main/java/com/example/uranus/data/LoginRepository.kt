@@ -70,9 +70,12 @@ class LoginRepository {
                         } else {
                             user = responseObj
                             val displayName = parsedResponse.email
-                            LoginResponseView(displayName = displayName)
                             loginResult.value =
-                                LoginResult(success = LoggedInUserView(displayName = displayName))
+                                LoginResult(success = LoggedInUserView(displayName = displayName),
+                                            public_key = responseObj.public_key,
+                                            auth_token = responseObj.auth_token,
+                                            refresh_token = responseObj.refresh_token,
+                                            user_id = responseObj.id)
                         }
                     }
                 } else {
