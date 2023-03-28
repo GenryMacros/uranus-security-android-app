@@ -1,7 +1,7 @@
 package com.example.uranus.utils
 
 import com.beust.klaxon.Klaxon
-import network.interfaces.LoginResponseBody
+import network.api.interfaces.LoginResponseBody
 import java.security.*
 import java.security.spec.X509EncodedKeySpec
 import java.util.*

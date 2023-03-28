@@ -4,19 +4,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
+import io.socket.client.IO
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.example.uranus.databinding.ActivityHomeBinding
-import com.example.uranus.ui.login.LoginResult
 
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var mSocket: Socket;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +33,31 @@ class HomeActivity : AppCompatActivity() {
 
         homeViewModel = ViewModelProvider(this, HomeViewModelFactory())
             .get(HomeViewModel::class.java)
+
+        try {
+            mSocket = IO.socket("http://10.0.2.2:8086")
+            Log.d("success", "Connected to socket server")
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("fail", "Failed to connect")
+        }
+
+        mSocket.on(Socket.EVENT_CONNECT, onFrames)
+        mSocket.on("ROBBERY", onRobbery)
+        mSocket.connect()
     }
+
+
+    var onFrames = Emitter.Listener {
+
+    }
+
+
+    var onRobbery = Emitter.Listener {
+        Log.d("fail", "ROBBERY")
+    }
+
 
     companion object {
         fun startActivity(context: Context, login_data: HomeAuthData) {

@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
 import com.example.uranus.data.LoginRepository
-import com.example.uranus.data.Result
 
 import com.example.uranus.R
-import com.example.uranus.data.model.LoggedInUser
-import network.interfaces.LoginResponse
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 

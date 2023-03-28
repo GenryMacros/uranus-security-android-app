@@ -6,11 +6,10 @@ import com.example.uranus.ui.confirmation.ConfirmationResult
 import com.example.uranus.ui.confirmation.interfaces.ConfirmationData
 import com.example.uranus.ui.login.LoggedInUserView
 import com.example.uranus.utils.SecretsHandler
-import network.MainServerApi
-import network.interfaces.ConfirmationDataRequest
-import network.interfaces.LoginResponse
-import network.interfaces.LoginResponseView
-import network.interfaces.SignupResponse
+import network.api.MainServerApi
+import network.api.interfaces.LoginResponse
+import network.api.interfaces.LoginResponseView
+import network.api.interfaces.SignupResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -4,17 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import com.beust.klaxon.Klaxon
 import com.example.uranus.ui.login.LoggedInUserView
 import com.example.uranus.ui.login.LoginResult
-import com.example.uranus.ui.signup.SignupResult
 import com.example.uranus.utils.SecretsHandler
-import network.MainServerApi
-import network.interfaces.LoginData
-import network.interfaces.LoginResponse
-import network.interfaces.LoginResponseView
-import network.interfaces.SignupResponse
+import network.api.MainServerApi
+import network.api.interfaces.LoginData
+import network.api.interfaces.LoginResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.await
 
 /**
  * Class that requests authentication and user information from the remote data source and

@@ -4,8 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import com.beust.klaxon.Klaxon
 import com.example.uranus.ui.signup.SignupResult
 import com.example.uranus.ui.signup.interfaces.SignupData
-import network.MainServerApi
-import network.interfaces.*
+import network.api.MainServerApi
+import network.api.interfaces.SignupDataRequest
+import network.api.interfaces.SignupResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
