@@ -1,4 +1,4 @@
-package network.interfaces
+package network.api.interfaces
 
 import com.example.uranus.ui.confirmation.interfaces.ConfirmationData
 import com.google.gson.annotations.SerializedName

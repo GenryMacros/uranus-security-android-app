@@ -1,6 +1,10 @@
-package network
+package network.api
 
-import network.interfaces.*
+import network.api.interfaces.LoginData
+import network.api.interfaces.LoginResponse
+import network.api.interfaces.SignupDataRequest
+import network.api.interfaces.SignupResponse
+import network.api.interfaces.*
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
