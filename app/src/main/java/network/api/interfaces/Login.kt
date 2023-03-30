@@ -13,7 +13,7 @@ data class LoginResponseView(
 
 data class LoginResponse(
     @SerializedName("id")
-    val id: Int,
+    val id: Int? = null,
     @SerializedName("public_key")
     val public_key: String? = null,
     @SerializedName("auth_token")

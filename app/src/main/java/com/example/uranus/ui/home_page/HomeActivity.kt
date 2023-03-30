@@ -10,17 +10,26 @@ import android.view.Gravity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.uranus.R
 import com.example.uranus.databinding.ActivityHomeBinding
 import com.example.uranus.ui.home_page.data.AuthenticationData
+import com.example.uranus.ui.home_page.data.AuthenticationResponse
+import com.example.uranus.ui.home_page.data.GetCamerasResponse
+import com.example.uranus.ui.home_page.utility.CamsHandler
+import com.example.uranus.ui.login.LoginActivity
+import com.example.uranus.ui.login.LoginResult
 import com.google.gson.Gson
 import io.socket.client.Ack
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import org.json.JSONObject
+import java.util.Objects
+import kotlin.reflect.typeOf
 
 
 class HomeActivity : AppCompatActivity() {
@@ -28,51 +37,36 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var binding: ActivityHomeBinding
     private lateinit var mSocket: Socket;
+    private lateinit var camsHandler: CamsHandler;
+    private var gson = Gson();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val linearLayout = findViewById<LinearLayout>(R.id.cameras_container)
-        val authData = createAuthData()
-        val gson = Gson()
+        camsHandler = CamsHandler(this,
+                                 findViewById(R.id.cameras_container))
 
         val profile = binding.profile
         val addDevice = binding.add
         val settings = binding.settings
 
-        val btnShow = Button(this);
-        btnShow.layoutParams = LinearLayout.LayoutParams(180, 150);
-        btnShow.setBackgroundResource(R.drawable.cam_background);
-        btnShow.gravity = Gravity.RIGHT or Gravity.BOTTOM
-        btnShow.setTextColor(resources.getColor(R.color.login_text_color))
-        btnShow.text = "0"
-
-        linearLayout.addView(btnShow);
         homeViewModel = ViewModelProvider(this, HomeViewModelFactory())
             .get(HomeViewModel::class.java)
 
         try {
             mSocket = IO.socket("http://10.0.2.2:8086")
-            Log.d("success", "Connected to socket server")
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.d("fail", "Failed to connect")
         }
 
         mSocket.on(Socket.EVENT_CONNECT, onFrames)
         mSocket.on("ROBBERY", onRobbery)
         mSocket.connect()
-        val obj = JSONObject(gson.toJson(authData))
-        println(obj)
-        mSocket.emit("authenticate", obj)
-        val data = mSocket.emit("get_cameras", Ack { args ->
-            val response: JSONObject = args[0] as JSONObject
-            println(response)
-        });
-        val a = 0;
+        mSocket.emit("authenticate", JSONObject(gson.toJson(createAuthData())),
+            Ack { args -> authenticateCallback(args) });
     }
 
 
@@ -84,11 +78,30 @@ class HomeActivity : AppCompatActivity() {
         Log.d("fail", "ROBBERY")
     }
 
-    fun callback(data: Any) {
-        println(data)
+    private fun authenticateCallback(vararg args: Any) {
+        val response: JSONObject = (args[0] as Array<Any>)[0] as JSONObject
+        val responseObj: AuthenticationResponse = gson.fromJson(response.toString(),
+                                                                AuthenticationResponse::class.java)
+        if (responseObj.success) {
+            mSocket.emit("get_cameras", Ack { args -> getCamerasCallback(args) })
+        } else {
+            LoginActivity.startActivity(this)
+            finish()
+        }
     }
 
-    fun createAuthData(): AuthenticationData {
+    private fun getCamerasCallback(vararg args: Any) {
+        val response: JSONObject = (args[0] as Array<Any>)[0] as JSONObject
+        val responseObj: GetCamerasResponse = gson.fromJson(response.toString(),
+            GetCamerasResponse::class.java)
+
+        if (responseObj.success) {
+            camsHandler.setCamData(responseObj.cameras)
+            camsHandler.generateButtons()
+        }
+    }
+
+    private fun createAuthData(): AuthenticationData {
         val publicKey = intent.getStringExtra("public_key")
         val token = intent.getStringExtra("auth_token")
         val refreshToken = intent.getStringExtra("refresh_token")
