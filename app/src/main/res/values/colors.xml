@@ -11,6 +11,7 @@
     <color name="signup_color">#557F75 </color>
     <color name="main_color">#414244</color>
     <color name="forms">#62776E</color>
+    <color name="transparent">#ffffff</color>
     <color name="login_underline_color">#a8d9c3</color>
     <color name="hint_color">#d8d9db</color>
     <color name="login_text_color">#d6d7d9</color>

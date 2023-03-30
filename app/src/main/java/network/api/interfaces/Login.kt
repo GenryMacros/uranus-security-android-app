@@ -12,8 +12,8 @@ data class LoginResponseView(
 )
 
 data class LoginResponse(
-    @SerializedName("user_id")
-    val id: Int? = null,
+    @SerializedName("id")
+    val id: Int,
     @SerializedName("public_key")
     val public_key: String? = null,
     @SerializedName("auth_token")
