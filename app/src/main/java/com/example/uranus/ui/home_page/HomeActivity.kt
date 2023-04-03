@@ -6,11 +6,8 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
-import android.widget.Button
+import androidx.lifecycle.Observer
 import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -55,6 +52,13 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel = ViewModelProvider(this, HomeViewModelFactory())
             .get(HomeViewModel::class.java)
 
+        camsHandler.isNeedRefresh.observe(this@HomeActivity, Observer {
+            val isNeedRefresh = it ?: return@Observer
+            if (isNeedRefresh) {
+                camsHandler.generateButtons()
+            }
+        })
+
         try {
             mSocket = IO.socket("http://10.0.2.2:8086")
 
@@ -97,7 +101,6 @@ class HomeActivity : AppCompatActivity() {
 
         if (responseObj.success) {
             camsHandler.setCamData(responseObj.cameras)
-            camsHandler.generateButtons()
         }
     }
 
