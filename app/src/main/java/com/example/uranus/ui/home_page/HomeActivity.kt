@@ -9,7 +9,6 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.uranus.R
 import com.example.uranus.databinding.ActivityHomeBinding
@@ -18,15 +17,12 @@ import com.example.uranus.ui.home_page.data.AuthenticationResponse
 import com.example.uranus.ui.home_page.data.GetCamerasResponse
 import com.example.uranus.ui.home_page.utility.CamsHandler
 import com.example.uranus.ui.login.LoginActivity
-import com.example.uranus.ui.login.LoginResult
 import com.google.gson.Gson
 import io.socket.client.Ack
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
 import org.json.JSONObject
-import java.util.Objects
-import kotlin.reflect.typeOf
 
 
 class HomeActivity : AppCompatActivity() {
