@@ -2,10 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/home_container"
-    android:background="@color/main_color">
+    android:background="@color/main_color"
+    tools:visibility="visible">
 
     <ImageView
         android:id="@+id/cameras_line"
@@ -78,7 +79,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/bottom_bar" />
-        
+
     <TextView
         android:id="@+id/cameras_text"
         android:layout_width="113dp"
@@ -104,7 +105,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/footer"
-        app:layout_constraintTop_toBottomOf="@+id/cameras_line"/>
+        app:layout_constraintTop_toBottomOf="@+id/cameras_line" />
 
     <LinearLayout
         android:id="@+id/cameras_container"
@@ -118,6 +119,14 @@
         app:layout_constraintBottom_toTopOf="@+id/cameras_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cameras_text" />
+        app:layout_constraintTop_toBottomOf="@+id/cameras_text">
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="visible" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

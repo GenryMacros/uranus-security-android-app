@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.Observer
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +45,7 @@ class HomeActivity : AppCompatActivity() {
         val profile = binding.profile
         val addDevice = binding.add
         val settings = binding.settings
+        val loadingBar = binding.loading
 
         homeViewModel = ViewModelProvider(this, HomeViewModelFactory())
             .get(HomeViewModel::class.java)
@@ -52,6 +54,7 @@ class HomeActivity : AppCompatActivity() {
             val isNeedRefresh = it ?: return@Observer
             if (isNeedRefresh) {
                 camsHandler.generateButtons()
+                loadingBar.visibility = View.GONE
             }
         })
 
