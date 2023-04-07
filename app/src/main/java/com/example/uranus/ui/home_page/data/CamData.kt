@@ -6,6 +6,6 @@ class GetCamerasResponse(
 )
 
 class CamData(
-    val camId: Int,
-    val isOnline: Boolean
+    val cam_id: Int,
+    val is_online: Boolean
 )

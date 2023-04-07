@@ -5,6 +5,7 @@
             <item>
                 <shape
                     android:shape="rectangle">
+                    <stroke android:width="2dip" android:color="@color/login_underline_color"/>
                     <corners android:radius="600dp"/>
                     <solid android:color="@color/main_color"/>
                     <solid android:background="@drawable/cam"/>
@@ -18,7 +19,6 @@
             <item>
                 <shape
                     android:shape="rectangle">
-                    <corners android:radius="500dp"/>
                     <solid android:color="@color/main_color"/>
                     <solid android:background="@drawable/cam"/>
                 </shape>

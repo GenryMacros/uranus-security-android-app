@@ -1,7 +1,9 @@
 package com.example.uranus.ui.home_page.utility
 
 import android.content.Context
-import android.content.Intent
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.Gravity
 import android.widget.Button
 import android.widget.LinearLayout
@@ -39,10 +41,16 @@ class CamsHandler(
 
     private fun configureButton(camData: CamData, button: Button) {
         button.layoutParams = LinearLayout.LayoutParams(180, 150);
-        button.setBackgroundResource(R.drawable.cam_background);
+        if (camData.is_online)
+            button.setBackgroundResource(R.drawable.cam_background_active);
+        else
+            button.setBackgroundResource(R.drawable.cam_background_inactive);
         button.gravity = Gravity.RIGHT or Gravity.BOTTOM
-        button.setTextColor(ContextCompat.getColor(contx, R.color.login_text_color))
-        button.text = camData.camId.toString()
+        button.setTextColor(ContextCompat.getColor(contx, R.color.cam_color))
+        val camStr= camData.cam_id.toString()
+        val spanString = SpannableString(camStr)
+        spanString.setSpan(StyleSpan(Typeface.BOLD), 0, spanString.length, 0)
+        button.text = spanString
     }
 
 }

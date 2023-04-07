@@ -21,7 +21,7 @@ class SecretsHandler {
             if (time > responseBody.expiration_date) {
                 return null
             }
-            val tokenSignature = Base64.getDecoder().decode(Base64.getDecoder().decode(splittedToken[2]))
+            val tokenSignature = splittedToken[2].toByteArray()
             if (this.isSignatureOk(clientPublic, tokenSignature)) {
                 return responseBody
             }
