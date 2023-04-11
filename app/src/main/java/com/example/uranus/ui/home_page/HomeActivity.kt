@@ -67,9 +67,8 @@ class HomeActivity : AppCompatActivity() {
 
         mSocket.on(Socket.EVENT_CONNECT, onFrames)
         mSocket.on("ROBBERY", onRobbery)
+        mSocket.on("ASK_AUTHENTICATE", onAuthAsk)
         mSocket.connect()
-        mSocket.emit("authenticate", JSONObject(gson.toJson(createAuthData())),
-            Ack { args -> authenticateCallback(args) });
     }
 
 
@@ -79,6 +78,11 @@ class HomeActivity : AppCompatActivity() {
 
     var onRobbery = Emitter.Listener {
         Log.d("fail", "ROBBERY")
+    }
+
+    var onAuthAsk = Emitter.Listener {
+        mSocket.emit("authenticate", JSONObject(gson.toJson(createAuthData())),
+            Ack { args -> authenticateCallback(args) });
     }
 
     private fun authenticateCallback(vararg args: Any) {
