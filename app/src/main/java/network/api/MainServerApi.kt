@@ -15,14 +15,17 @@ import retrofit2.http.Body
 import retrofit2.http.Query
 
 interface MainServerApi {
-    @POST("/users/login")
+    @POST("/clients/login")
     fun login(@Body loginData: LoginData): Call<LoginResponse>
 
-    @POST("/users/signup")
+    @POST("/clients/signup")
     fun signup(@Body signupData: SignupDataRequest): Call<SignupResponse>
 
-    @GET("/users/confirm")
+    @POST("/users/confirm")
     fun confirm(@Query("id") id: Int, @Query("token") token: String): Call<LoginResponse>
+
+    @POST("/clients/cameras/invasions")
+    fun getInvasions(@Body loginData: InvasionGetOut): Call<InvasionGetResponse>
 
     companion object {
         private const val apiAddress = "http://10.0.2.2:8010/"

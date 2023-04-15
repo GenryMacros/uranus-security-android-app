@@ -34,9 +34,9 @@ import org.json.JSONObject
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var homeViewModel: HomeViewModel
     private lateinit var binding: ActivityHomeBinding
     private lateinit var camsHandler: CamsHandler;
+    private lateinit var authData: AuthenticationData;
     private var gson = Gson();
     private var mService: SocketService = SocketService();
     var mBound = false
@@ -45,7 +45,7 @@ class HomeActivity : AppCompatActivity() {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             val binder: SocketService.SocketBinder = service as SocketService.SocketBinder
             mService = binder.getService()
-            mService.connect(createAuthData())
+            mService.connect(authData)
 
             mService.isAuthenticated.observe(this@HomeActivity, Observer {
                 val isAuthenticated = it ?: return@Observer
@@ -89,22 +89,20 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        authData = createAuthData()
         val intent1 = Intent(this, SocketService::class.java)
         bindService(intent1, mConnection, Context.BIND_AUTO_CREATE);
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         camsHandler = CamsHandler(this,
-                                 findViewById(R.id.cameras_container))
+                                 findViewById(R.id.cameras_container),
+                                 authData)
 
         val profile = binding.profile
         val addDevice = binding.add
         val settings = binding.settings
         val loadingBar = binding.loading
-
-
-        homeViewModel = ViewModelProvider(this, HomeViewModelFactory())
-            .get(HomeViewModel::class.java)
 
         camsHandler.isNeedRefresh.observe(this@HomeActivity, Observer {
             val isNeedRefresh = it ?: return@Observer
@@ -122,9 +120,9 @@ class HomeActivity : AppCompatActivity() {
         val refreshToken = intent.getStringExtra("refresh_token")
         val userId = intent.getIntExtra("user_id", -1)
 
-        return AuthenticationData(publicKey,
-                                  token,
-                                  refreshToken,
+        return AuthenticationData(publicKey ?: "",
+                                  token ?: "",
+                                  refreshToken ?: "",
                                   userId)
     }
 

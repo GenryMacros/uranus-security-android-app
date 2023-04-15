@@ -11,12 +11,15 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.uranus.R
+import com.example.uranus.ui.home_page.data.AuthenticationData
 import com.example.uranus.ui.home_page.data.CamData
+import com.example.uranus.ui.invasions_page.InvasionsActivity
 
 
 class CamsHandler(
     private val contx: Context,
-    private val layout: LinearLayout
+    private val layout: LinearLayout,
+    private val authData: AuthenticationData
 ) {
     private var camerasData: List<CamData> = emptyList();
     private val _isNeedRefresh = MutableLiveData<Boolean>()
@@ -47,10 +50,13 @@ class CamsHandler(
             button.setBackgroundResource(R.drawable.cam_background_inactive);
         button.gravity = Gravity.RIGHT or Gravity.BOTTOM
         button.setTextColor(ContextCompat.getColor(contx, R.color.cam_color))
-        val camStr= camData.cam_id.toString()
+        val camStr= camData.cam_name.toString()
         val spanString = SpannableString(camStr)
         spanString.setSpan(StyleSpan(Typeface.BOLD), 0, spanString.length, 0)
         button.text = spanString
+        button.setOnClickListener {
+            InvasionsActivity.startActivity(contx, authData, camData.cam_id)
+        }
     }
 
 }

@@ -19,7 +19,9 @@
             <item>
                 <shape
                     android:shape="rectangle">
-                    <solid android:color="@color/main_color"/>
+                    <stroke android:width="2dip" android:color="@color/login_underline_color"/>
+                    <corners android:radius="600dp"/>
+                    <solid android:color="@color/login_underline_color"/>
                     <solid android:background="@drawable/cam"/>
                 </shape>
             </item>

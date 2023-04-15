@@ -1,4 +1,4 @@
-package com.example.uranus.ui.login
+package com.example.uranus.ui.login.data
 
 
 data class LoginFormState(
