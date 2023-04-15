@@ -1,8 +1,11 @@
 package com.example.uranus.ui.home_page
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.uranus.R
 import com.example.uranus.databinding.ActivityHomeBinding
+import com.example.uranus.services.EventType
+import com.example.uranus.services.SocketEvent
+import com.example.uranus.services.SocketService
 import com.example.uranus.ui.home_page.data.AuthenticationData
 import com.example.uranus.ui.home_page.data.AuthenticationResponse
 import com.example.uranus.ui.home_page.data.GetCamerasResponse
@@ -30,12 +36,61 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var homeViewModel: HomeViewModel
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var mSocket: Socket;
     private lateinit var camsHandler: CamsHandler;
     private var gson = Gson();
+    private var mService: SocketService = SocketService();
+    var mBound = false
+
+    private val mConnection: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder: SocketService.SocketBinder = service as SocketService.SocketBinder
+            mService = binder.getService()
+            mService.connect(createAuthData())
+
+            mService.isAuthenticated.observe(this@HomeActivity, Observer {
+                val isAuthenticated = it ?: return@Observer
+                if (isAuthenticated) {
+                    mService.sendEvent(SocketEvent(EventType.GET_CAMERAS, null))
+                }
+            })
+
+            mService.serverReceivedEvents.observe(this@HomeActivity, Observer {
+                val events = it ?: return@Observer
+                events.forEach { event ->
+                    run {
+                        when (event.type) {
+                            EventType.GET_CAMERAS -> {
+                                val responseObj: GetCamerasResponse = gson.fromJson(event.body.toString(),
+                                    GetCamerasResponse::class.java)
+
+                                if (responseObj.success) {
+                                    camsHandler.setCamData(responseObj.cameras)
+                                }
+                            }
+                            EventType.INVASION -> {
+                                //@TODO
+                            }
+                            EventType.ERROR -> {
+                                //@TODO
+                            }
+                            else -> {}
+                        }
+                        mService.removeObservedEvent(event)
+                    }
+                }
+            })
+
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            mBound = false
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val intent1 = Intent(this, SocketService::class.java)
+        bindService(intent1, mConnection, Context.BIND_AUTO_CREATE);
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -46,6 +101,7 @@ class HomeActivity : AppCompatActivity() {
         val addDevice = binding.add
         val settings = binding.settings
         val loadingBar = binding.loading
+
 
         homeViewModel = ViewModelProvider(this, HomeViewModelFactory())
             .get(HomeViewModel::class.java)
@@ -58,53 +114,6 @@ class HomeActivity : AppCompatActivity() {
             }
         })
 
-        try {
-            mSocket = IO.socket("http://10.0.2.2:8086")
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        mSocket.on(Socket.EVENT_CONNECT, onFrames)
-        mSocket.on("ROBBERY", onRobbery)
-        mSocket.on("ASK_AUTHENTICATE", onAuthAsk)
-        mSocket.connect()
-    }
-
-
-    var onFrames = Emitter.Listener {
-
-    }
-
-    var onRobbery = Emitter.Listener {
-        Log.d("fail", "ROBBERY")
-    }
-
-    var onAuthAsk = Emitter.Listener {
-        mSocket.emit("authenticate", JSONObject(gson.toJson(createAuthData())),
-            Ack { args -> authenticateCallback(args) });
-    }
-
-    private fun authenticateCallback(vararg args: Any) {
-        val response: JSONObject = (args[0] as Array<Any>)[0] as JSONObject
-        val responseObj: AuthenticationResponse = gson.fromJson(response.toString(),
-                                                                AuthenticationResponse::class.java)
-        if (responseObj.success) {
-            mSocket.emit("get_cameras", Ack { args -> getCamerasCallback(args) })
-        } else {
-            LoginActivity.startActivity(this)
-            finish()
-        }
-    }
-
-    private fun getCamerasCallback(vararg args: Any) {
-        val response: JSONObject = (args[0] as Array<Any>)[0] as JSONObject
-        val responseObj: GetCamerasResponse = gson.fromJson(response.toString(),
-            GetCamerasResponse::class.java)
-
-        if (responseObj.success) {
-            camsHandler.setCamData(responseObj.cameras)
-        }
     }
 
     private fun createAuthData(): AuthenticationData {
