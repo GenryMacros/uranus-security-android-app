@@ -5,15 +5,16 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.graphics.Color
 import android.os.Bundle
 import android.os.IBinder
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
-import android.util.DisplayMetrics
+import android.util.TypedValue
+import android.view.Gravity
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.setMargins
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.uranus.R
@@ -68,45 +69,96 @@ class InvasionsActivity : AppCompatActivity() {
         invasionsViewModel.invasions.observe(this@InvasionsActivity, Observer {
             val invasionsData = it ?: return@Observer
             if (invasionsData.success == true) {
+                val leftRowMargin = 0
+                val topRowMargin = 0
+                val rightRowMargin = 0
+                val bottomRowMargin = 0
+                var textSize = 16F
+                var smallTextSize = 12F
+                var mediumTextSize = 14F
+                var id = 0
+                var textSpacer: TextView;
                 while (table.getChildCount() > 1) {
                     table.removeView(table.getChildAt(table.getChildCount() - 1))
                 }
                 invasionsData.invasions?.forEach{ invasion ->
                     run {
-                        val displayMetrics = DisplayMetrics()
-                        val newRow = TableRow(this)
-
-                        val layout = LinearLayout.LayoutParams(
-                            100,
-                            100)
-                        layout.setMargins(10, 10, 10, 10);
-                        newRow.layoutParams = layout
+                        textSpacer = TextView(this);
+                        textSpacer.setText("");
+                        val tv = TextView(this);
+                        tv.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                                                                TableRow.LayoutParams.WRAP_CONTENT)
+                        tv.gravity = Gravity.LEFT
+                        tv.setPadding(5, 15, 0, 15);
 
                         val cal: Calendar = Calendar.getInstance(Locale.ENGLISH)
                         cal.timeInMillis = (invasion.date ?: 0).toLong() * 1000
-                        val date = TextView(this);
-                        date.text = DateFormat.format("dd-MM-yyyy", cal).toString();
-                        date.textSize = 16F
-                        date.setTextColor(R.color.purple_200)
+                        tv.text = DateFormat.format("dd-MM-yyyy", cal).toString();
+                        tv.textSize = 16F;
 
-                        val intruders = TextView(this);
-                        intruders.layoutParams = layout
-                        intruders.text = "aaaaaa"
-                        intruders.textSize = 16F
-                        val shortFragment = Button(this)
-                        shortFragment.layoutParams = LinearLayout.LayoutParams(50, 50);
-                        shortFragment.setBackgroundResource(R.drawable.video_download_button);
-                        shortFragment.setOnClickListener {
+                        val tv2 = TextView(this)
+                        tv2.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                                                                 TableRow.LayoutParams.MATCH_PARENT)
+                        tv2.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+
+                        tv2.gravity = Gravity.LEFT;
+                        tv2.setPadding(5, 15, 0, 15);
+
+                        tv2.setTextColor(Color.parseColor("#000000"));
+                        tv2.text = "aaaaaaaaaaa";
+                        tv2.textSize = 16F;
+
+                        val tv3 = LinearLayout(this)
+                        tv3.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                            150)
+
+                        tv3.gravity = Gravity.CENTER;
+                        tv3.setPadding(5, 15, 0, 15);
+                        val tv3b = Button(this);
+                        tv3b.layoutParams = TableRow.LayoutParams(120,
+                            120)
+                        tv3b.setPadding(5, 0, 0, 5);
+
+                        tv3b.setGravity(Gravity.CENTER);
+                        tv3b.setBackgroundResource(R.drawable.video_download_button);
+                        tv3b.setOnClickListener {
                             //TODO show video by link
                         }
+                        tv3.addView(tv3b)
 
-                        newRow.addView(date)
-                        newRow.addView(intruders)
-                        newRow.addView(shortFragment)
+                        val tv4 = LinearLayout(this)
+                        tv4.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                            150)
 
-                        table.addView(newRow)
-                        //val fullFragment =
-                        //table.addView()
+                        tv4.gravity = Gravity.CENTER;
+                        tv4.setPadding(5, 15, 0, 15);
+                        val tv4b = Button(this);
+                        tv4b.layoutParams = TableRow.LayoutParams(120,
+                            120)
+                        tv4b.setPadding(5, 0, 0, 5);
+
+                        tv4b.setGravity(Gravity.CENTER);
+                        tv4b.setBackgroundResource(R.drawable.video_download_button);
+                        tv4b.setOnClickListener {
+                            //TODO show video by link
+                        }
+                        tv4.addView(tv4b)
+
+                        // add table row
+                        val tr = TableRow(this);
+                        tr.id = id;
+                        id += 1;
+                        val trParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
+                                                                150);
+                        trParams.setMargins(leftRowMargin, topRowMargin, rightRowMargin,
+                            bottomRowMargin);
+                        tr.setPadding(0,0,0,0);
+                        tr.layoutParams = trParams;
+                        tr.addView(tv);
+                        tr.addView(tv2);
+                        tr.addView(tv3);
+                        tr.addView(tv4);
+                        table.addView(tr, trParams);
                     }
                 }
             } else {
