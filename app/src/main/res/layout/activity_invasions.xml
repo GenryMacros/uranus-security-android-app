@@ -22,19 +22,20 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="416dp"
-        android:layout_height="655dp"
+        android:layout_width="417dp"
+        android:layout_height="674dp"
         android:layout_marginTop="1dp"
         android:layout_weight="1"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header">
 
         <TableLayout
             android:id="@+id/tableLayout"
-            android:layout_width="410dp"
+            android:layout_width="430dp"
             android:layout_height="654dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
@@ -50,7 +51,8 @@
                     android:layout_weight="1"
                     android:text="@string/invasions_col1"
                     android:textColor="@color/hint_color"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:gravity="center"/>
 
                 <TextView
                     android:layout_width="wrap_content"

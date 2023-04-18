@@ -21,6 +21,7 @@ import com.example.uranus.R
 import com.example.uranus.databinding.ActivityInvasionsBinding
 import com.example.uranus.services.SocketService
 import com.example.uranus.ui.home_page.data.AuthenticationData
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -69,13 +70,11 @@ class InvasionsActivity : AppCompatActivity() {
         invasionsViewModel.invasions.observe(this@InvasionsActivity, Observer {
             val invasionsData = it ?: return@Observer
             if (invasionsData.success == true) {
-                val leftRowMargin = 0
-                val topRowMargin = 0
-                val rightRowMargin = 0
+                val buttonWidth = 150
+                val buttonHeight = 150
+                val tableRowOffset = 20
                 val bottomRowMargin = 0
-                var textSize = 16F
-                var smallTextSize = 12F
-                var mediumTextSize = 14F
+                val textSize = 16F
                 var id = 0
                 var textSpacer: TextView;
                 while (table.getChildCount() > 1) {
@@ -89,12 +88,12 @@ class InvasionsActivity : AppCompatActivity() {
                         tv.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                                                                 TableRow.LayoutParams.WRAP_CONTENT)
                         tv.gravity = Gravity.LEFT
-                        tv.setPadding(5, 15, 0, 15);
+                        tv.setPadding(5, 40, 0, 0);
 
-                        val cal: Calendar = Calendar.getInstance(Locale.ENGLISH)
-                        cal.timeInMillis = (invasion.date ?: 0).toLong() * 1000
-                        tv.text = DateFormat.format("dd-MM-yyyy", cal).toString();
-                        tv.textSize = 16F;
+                        val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+                        tv.setTextColor(Color.parseColor("#df57d3"))
+                        tv.text = dateFormat.format( (invasion.date ?: 0).toLong() * 1000L);
+                        tv.textSize = 15F;
 
                         val tv2 = TextView(this)
                         tv2.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
@@ -102,7 +101,7 @@ class InvasionsActivity : AppCompatActivity() {
                         tv2.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
 
                         tv2.gravity = Gravity.LEFT;
-                        tv2.setPadding(5, 15, 0, 15);
+                        tv2.setPadding(5, 15, 0, 0);
 
                         tv2.setTextColor(Color.parseColor("#000000"));
                         tv2.text = "aaaaaaaaaaa";
@@ -113,33 +112,33 @@ class InvasionsActivity : AppCompatActivity() {
                             150)
 
                         tv3.gravity = Gravity.CENTER;
-                        tv3.setPadding(5, 15, 0, 15);
+                        tv3.setPadding(0, 15, 0, 0);
                         val tv3b = Button(this);
-                        tv3b.layoutParams = TableRow.LayoutParams(120,
-                            120)
-                        tv3b.setPadding(5, 0, 0, 5);
+                        tv3b.layoutParams = TableRow.LayoutParams(buttonWidth, buttonHeight)
+                        tv3b.setPadding(0, 0, 0, 0);
 
                         tv3b.setGravity(Gravity.CENTER);
                         tv3b.setBackgroundResource(R.drawable.video_download_button);
                         tv3b.setOnClickListener {
+                            println("tv3b.setOnClickListener")
                             //TODO show video by link
                         }
                         tv3.addView(tv3b)
 
                         val tv4 = LinearLayout(this)
                         tv4.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                            150)
+                            buttonHeight)
 
                         tv4.gravity = Gravity.CENTER;
-                        tv4.setPadding(5, 15, 0, 15);
+                        tv4.setPadding(0, 15, 0, 0);
                         val tv4b = Button(this);
-                        tv4b.layoutParams = TableRow.LayoutParams(120,
-                            120)
-                        tv4b.setPadding(5, 0, 0, 5);
+                        tv4b.layoutParams = TableRow.LayoutParams(buttonWidth, buttonHeight)
+                        tv4b.setPadding(0, 0, 0, 0);
 
                         tv4b.setGravity(Gravity.CENTER);
                         tv4b.setBackgroundResource(R.drawable.video_download_button);
                         tv4b.setOnClickListener {
+                            println("tv4b.setOnClickListener")
                             //TODO show video by link
                         }
                         tv4.addView(tv4b)
@@ -149,11 +148,12 @@ class InvasionsActivity : AppCompatActivity() {
                         tr.id = id;
                         id += 1;
                         val trParams = TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-                                                                150);
-                        trParams.setMargins(leftRowMargin, topRowMargin, rightRowMargin,
+                            buttonHeight + tableRowOffset);
+                        trParams.setMargins(0, 0, 0,
                             bottomRowMargin);
-                        tr.setPadding(0,0,0,0);
+                        tr.setPadding(0,20,0,0);
                         tr.layoutParams = trParams;
+                        tr.setBackgroundColor(if (id % 2 == 0) Color.parseColor("#414244") else Color.parseColor("#37383a"))
                         tr.addView(tv);
                         tr.addView(tv2);
                         tr.addView(tv3);
