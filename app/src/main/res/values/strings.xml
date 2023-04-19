@@ -32,6 +32,6 @@
     <string name="verification_code">Verification code</string>
     <string name="invasions_col1"><b>   DATE</b></string>
     <string name="invasions_col2"><b>INTRUDERS</b></string>
-    <string name="invasions_col3"><b>SHORT</b></string>
+    <string name="invasions_col3"><b>VIDEO</b></string>
     <string name="invasions_col4"><b>FULL</b></string>
 </resources>

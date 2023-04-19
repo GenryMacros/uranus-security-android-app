@@ -5,6 +5,7 @@ import network.api.interfaces.InvasionIn
 class Invasion(
     var id: Int,
     var date: Int,
+    var file_name: String,
     var link: String,
     var link_short: String
 )

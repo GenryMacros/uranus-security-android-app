@@ -1,5 +1,6 @@
 package network.api
 
+import android.content.Context
 import network.api.interfaces.LoginData
 import network.api.interfaces.LoginResponse
 import network.api.interfaces.SignupDataRequest
@@ -13,6 +14,8 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Body
 import retrofit2.http.Query
+import java.security.*
+
 
 interface MainServerApi {
     @POST("/clients/login")
@@ -42,7 +45,7 @@ interface MainServerApi {
                     .build()
 
                 retrofit.create(MainServerApi::class.java)
-            } catch(e: Throwable) {
+            } catch (e: Throwable) {
                 null
             }
         }

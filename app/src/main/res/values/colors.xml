@@ -8,6 +8,7 @@
     <color name="cam_color">#0884e6</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#7F000000</color>
+    <color name="transparent_black">#4D000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="login_color">#69937f </color>
     <color name="signup_color">#557F75 </color>

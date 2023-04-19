@@ -15,6 +15,8 @@ data class InvasionIn(
     val id: Int? = null,
     @SerializedName("date")
     val date: Int? = null,
+    @SerializedName("file_name")
+    val file_name: String? = null,
     @SerializedName("link")
     val link: String? = null,
     @SerializedName("link_short")

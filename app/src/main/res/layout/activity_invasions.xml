@@ -69,17 +69,20 @@
                     android:text="@string/invasions_col3"
                     android:textColor="@color/hint_color"
                     android:textSize="16dp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/invasions_col4"
-                    android:textColor="@color/hint_color"
-                    android:textSize="16dp" />
             </TableRow>
 
         </TableLayout>
     </ScrollView>
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
