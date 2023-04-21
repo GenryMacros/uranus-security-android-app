@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import com.example.uranus.ui.home_page.data.AuthenticationData
 import com.example.uranus.ui.home_page.data.AuthenticationResponse
 import com.example.uranus.ui.home_page.data.GetCamerasResponse
+import com.example.uranus.ui.home_page.data.InvasionPayload
+import com.example.uranus.ui.invasions_page.utility.Notificator
 import com.google.gson.Gson
 import io.socket.client.Ack
 import io.socket.client.IO
@@ -25,6 +27,7 @@ class SocketService : Service() {
     var serverReceivedEvents: LiveData<MutableList<SocketEvent>?> = _serverReceivedEvents;
     private val _isAuthenticated = MutableLiveData<Boolean>();
     var isAuthenticated: LiveData<Boolean> = _isAuthenticated;
+    private var notificator: Notificator = Notificator(this)
 
     private lateinit var mSocket: Socket;
     private lateinit var authData: AuthenticationData;
@@ -37,7 +40,10 @@ class SocketService : Service() {
         authData = auth_data;
         if (!mSocket.connected()) {
             _isAuthenticated.postValue(false)
+            mSocket.on(EventType.INVASION.toString().lowercase(), onInvasion)
+            mSocket.on(EventType.ASK_AUTHENTICATE.toString().lowercase(), onAuthAsk)
             mSocket.connect()
+            notificator.init()
         }
     }
 
@@ -52,8 +58,6 @@ class SocketService : Service() {
         if (_serverReceivedEvents.value == null) {
             _serverReceivedEvents.postValue(mutableListOf<SocketEvent>())
         }
-        mSocket.on(EventType.INVASION.toString().lowercase(), onInvasion)
-        mSocket.on(EventType.ASK_AUTHENTICATE.toString().lowercase(), onAuthAsk)
         _isAuthenticated.postValue(_isAuthenticated.value)
         return mBinder
     }
@@ -62,8 +66,11 @@ class SocketService : Service() {
 
     }
 
-    private var onInvasion = Emitter.Listener {
-        Log.d("fail", "INVASION")
+    private var onInvasion = Emitter.Listener { data -> kotlin.run {
+            val responseObj: InvasionPayload = gson.fromJson(data[0].toString(),
+                InvasionPayload::class.java)
+            notificator.sendNotification(responseObj)
+        }
     }
 
     private var onAuthAsk = Emitter.Listener {

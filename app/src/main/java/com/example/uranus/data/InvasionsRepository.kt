@@ -12,7 +12,8 @@ import retrofit2.Response
 
 class InvasionsRepository {
 
-    fun getInvasions(request_data: InvasionGetOut, invasionsData: MutableLiveData<InvasionsData>
+    fun getInvasions(request_data: InvasionGetOut, invasionsData: MutableLiveData<InvasionsData>,
+                     updatedData: MutableLiveData<Boolean>
     ) {
         val apiRequestResult = MainServerApi.getApi()?.getInvasions(request_data)
         apiRequestResult?.enqueue(object: Callback<InvasionGetResponse> {
@@ -35,6 +36,7 @@ class InvasionsRepository {
                                     success = responseObj.success,
                                     invasions = responseObj.invasions,
                                     reason = responseObj.reason)
+                        updatedData.value = true
                     }
                 } else {
                     if (response.errorBody() == null) {

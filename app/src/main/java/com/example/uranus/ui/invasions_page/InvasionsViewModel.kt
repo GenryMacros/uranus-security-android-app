@@ -13,6 +13,8 @@ class InvasionsViewModel(private val invasionsRepository: InvasionsRepository) :
     private val _invasions = MutableLiveData<InvasionsData>()
     val invasions: LiveData<InvasionsData> = _invasions
 
+    private val _is_updated = MutableLiveData<Boolean>()
+    val is_updated: LiveData<Boolean> = _is_updated
 
     fun getInvasions(authData: AuthenticationData, camId: Int) {
         val requestData = InvasionGetOut(
@@ -21,7 +23,7 @@ class InvasionsViewModel(private val invasionsRepository: InvasionsRepository) :
             cam_id=camId,
             date=0
         )
-        invasionsRepository.getInvasions(requestData, _invasions)
+        invasionsRepository.getInvasions(requestData, _invasions, _is_updated)
     }
 
     fun invasionsUpdated(invasion: InvasionsData) {

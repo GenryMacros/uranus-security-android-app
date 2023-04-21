@@ -99,9 +99,7 @@ class HomeActivity : AppCompatActivity() {
                                  findViewById(R.id.cameras_container),
                                  authData)
 
-        val profile = binding.profile
-        val addDevice = binding.add
-        val settings = binding.settings
+        val statsButton = binding.stats
         val loadingBar = binding.loading
 
         camsHandler.isNeedRefresh.observe(this@HomeActivity, Observer {

@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.uranus'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.uranus"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation "androidx.core:core:1.6.1"
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
