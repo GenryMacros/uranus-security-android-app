@@ -18,18 +18,15 @@ import android.view.LayoutInflater
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.downloader.*
 import com.example.uranus.R
 import com.example.uranus.databinding.ActivityInvasionsBinding
-import com.example.uranus.services.EventType
 import com.example.uranus.services.SocketService
 import com.example.uranus.ui.broadcast.BroadcastActivity
 import com.example.uranus.ui.home_page.data.AuthenticationData
-import com.example.uranus.ui.invasions_page.utility.Notificator
 import java.text.SimpleDateFormat
 
 

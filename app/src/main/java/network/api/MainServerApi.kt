@@ -1,6 +1,5 @@
 package network.api
 
-import android.content.Context
 import network.api.interfaces.LoginData
 import network.api.interfaces.LoginResponse
 import network.api.interfaces.SignupDataRequest
@@ -10,7 +9,6 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Body
 import retrofit2.http.Query
@@ -29,6 +27,9 @@ interface MainServerApi {
 
     @POST("/clients/cameras/invasions")
     fun getInvasions(@Body loginData: InvasionGetOut): Call<InvasionGetResponse>
+
+    @POST("/clients/cameras/invasions/statistic")
+    fun getInvasionStatistics(@Body loginData: StatisticsGetOut): Call<StatisticsGetResponse>
 
     companion object {
         private const val apiAddress = "http://10.0.2.2:8010/"

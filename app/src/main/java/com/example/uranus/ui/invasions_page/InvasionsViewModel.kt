@@ -25,8 +25,4 @@ class InvasionsViewModel(private val invasionsRepository: InvasionsRepository) :
         )
         invasionsRepository.getInvasions(requestData, _invasions, _is_updated)
     }
-
-    fun invasionsUpdated(invasion: InvasionsData) {
-        _invasions.value = invasion
-    }
 }

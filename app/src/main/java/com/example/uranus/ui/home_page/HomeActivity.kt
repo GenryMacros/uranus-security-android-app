@@ -86,7 +86,7 @@ class HomeActivity : AppCompatActivity() {
         val loadingBar = binding.loading
 
         statsButton.setOnClickListener {
-            StatisticActivity.startActivity(this)
+            StatisticActivity.startActivity(this, authData)
         }
 
         camsHandler.isNeedRefresh.observe(this@HomeActivity, Observer {
