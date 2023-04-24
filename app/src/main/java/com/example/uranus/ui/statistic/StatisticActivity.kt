@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.uranus.R
 import androidx.lifecycle.Observer
 import com.example.uranus.databinding.ActivityStatisticBinding
-import com.example.uranus.ui.home_page.HomeAuthData
 import com.example.uranus.ui.home_page.data.AuthenticationData
 import java.text.SimpleDateFormat
 
