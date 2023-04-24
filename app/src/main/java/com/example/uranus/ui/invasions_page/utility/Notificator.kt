@@ -42,7 +42,7 @@ class Notificator(
             BroadcastActivity::class.java
         )
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
+        intent.putExtra("cam_id", data.cam_id)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         val notificationUri: Uri = Uri.parse("file:///android_asset/notification.mp3")
         with(NotificationManagerCompat.from(context)) {

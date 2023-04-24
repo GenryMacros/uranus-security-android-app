@@ -100,7 +100,7 @@ class InvasionsActivity : AppCompatActivity() {
         }
 
         broadcastButton.setOnClickListener {
-            BroadcastActivity.startActivity(this)
+            BroadcastActivity.startActivity(this, camId)
         }
 
         invasionsViewModel = ViewModelProvider(this, InvasionsViewModelFactory())

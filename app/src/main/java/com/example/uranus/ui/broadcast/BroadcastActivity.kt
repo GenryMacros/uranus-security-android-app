@@ -29,6 +29,7 @@ class BroadcastActivity : AppCompatActivity() {
     private lateinit var backButton: Button
     private var gson = Gson();
     private var mService: SocketService = SocketService()
+    private var camId: Int = 0
     var mBound = false
     var count = 0
 
@@ -44,7 +45,7 @@ class BroadcastActivity : AppCompatActivity() {
                             EventType.FRAMES -> {
                                 val responseObj: FramesPayload = gson.fromJson(event.body.toString(),
                                        FramesPayload::class.java)
-                                val byteArr = Base64.decode(responseObj.frames[0].buffer, Base64.DEFAULT)
+                                val byteArr = Base64.decode(responseObj.frames[camId].buffer, Base64.DEFAULT)
                                 val bmp: Bitmap = BitmapFactory.decodeByteArray(byteArr,
                                     0,
                                     byteArr.size)
@@ -67,6 +68,7 @@ class BroadcastActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        camId = intent.getIntExtra("cam_id", 0)
         val intent1 = Intent(this, SocketService::class.java)
         bindService(intent1, mConnection, Context.BIND_AUTO_CREATE);
 
@@ -82,8 +84,9 @@ class BroadcastActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun startActivity(context: Context) {
+        fun startActivity(context: Context, cam_id: Int) {
             val intent = Intent(context, BroadcastActivity::class.java)
+            intent.putExtra("cam_id", cam_id)
             context.startActivity(intent)
         }
     }
