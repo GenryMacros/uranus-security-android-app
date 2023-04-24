@@ -67,12 +67,6 @@ class HomeActivity : AppCompatActivity() {
                                     camsHandler.setCamData(responseObj.cameras)
                                 }
                             }
-                            EventType.INVASION -> {
-                                //@TODO
-                            }
-                            EventType.ERROR -> {
-                                //@TODO
-                            }
                             else -> {}
                         }
                         mService.removeObservedEvent(event)

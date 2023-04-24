@@ -27,6 +27,7 @@ import com.example.uranus.R
 import com.example.uranus.databinding.ActivityInvasionsBinding
 import com.example.uranus.services.EventType
 import com.example.uranus.services.SocketService
+import com.example.uranus.ui.broadcast.BroadcastActivity
 import com.example.uranus.ui.home_page.data.AuthenticationData
 import com.example.uranus.ui.invasions_page.utility.Notificator
 import java.text.SimpleDateFormat
@@ -39,6 +40,7 @@ class InvasionsActivity : AppCompatActivity() {
     private lateinit var authData: AuthenticationData
     private lateinit var videoView: VideoView
     private lateinit var refreshButton: Button
+    private lateinit var broadcastButton: Button
     private var camId: Int = 0
     private var mService: SocketService = SocketService()
     private var downloadId: Int = 0
@@ -89,11 +91,16 @@ class InvasionsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         refreshButton = findViewById(R.id.refresh)
+        broadcastButton = findViewById(R.id.live)
         videoView = findViewById(R.id.videoView)
         val table = binding.tableLayout
 
         refreshButton.setOnClickListener {
             invasionsViewModel.getInvasions(authData, camId)
+        }
+
+        broadcastButton.setOnClickListener {
+            BroadcastActivity.startActivity(this)
         }
 
         invasionsViewModel = ViewModelProvider(this, InvasionsViewModelFactory())

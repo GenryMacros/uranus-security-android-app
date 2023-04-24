@@ -6,7 +6,7 @@ enum class InEvent { ASK_AUTHENTICATE, FRAMES }
 enum class EventType {
     GET_CAMERAS,
     AUTHENTICATE,
-    READ_FRAME,
+    READ_FRAMES,
     ASK_AUTHENTICATE,
     INVASION,
     FRAMES,

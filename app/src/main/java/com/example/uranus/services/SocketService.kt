@@ -11,12 +11,14 @@ import com.example.uranus.ui.home_page.data.AuthenticationData
 import com.example.uranus.ui.home_page.data.AuthenticationResponse
 import com.example.uranus.ui.home_page.data.GetCamerasResponse
 import com.example.uranus.ui.home_page.data.InvasionPayload
+import com.example.uranus.ui.invasions_page.data.FramesPayload
 import com.example.uranus.ui.invasions_page.utility.Notificator
 import com.google.gson.Gson
 import io.socket.client.Ack
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import kotlinx.coroutines.sync.Mutex
 import org.json.JSONObject
 
 
@@ -39,9 +41,11 @@ class SocketService : Service() {
     fun connect(auth_data: AuthenticationData) {
         authData = auth_data;
         if (!mSocket.connected()) {
+            _serverReceivedEvents.postValue(mutableListOf<SocketEvent>())
             _isAuthenticated.postValue(false)
             mSocket.on(EventType.INVASION.toString().lowercase(), onInvasion)
             mSocket.on(EventType.ASK_AUTHENTICATE.toString().lowercase(), onAuthAsk)
+            mSocket.on(EventType.FRAMES.toString().lowercase(), onFrames)
             mSocket.connect()
             notificator.init()
         }
@@ -55,15 +59,15 @@ class SocketService : Service() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        if (_serverReceivedEvents.value == null) {
-            _serverReceivedEvents.postValue(mutableListOf<SocketEvent>())
-        }
         _isAuthenticated.postValue(_isAuthenticated.value)
         return mBinder
     }
 
-    var onFrames = Emitter.Listener {
-
+    private var onFrames = Emitter.Listener { data -> kotlin.run {
+            val updated = _serverReceivedEvents.value;
+            updated?.add(SocketEvent(EventType.FRAMES, data[0] as JSONObject?))
+            _serverReceivedEvents.postValue(updated)
+        }
     }
 
     private var onInvasion = Emitter.Listener { data -> kotlin.run {
@@ -88,8 +92,8 @@ class SocketService : Service() {
                 mSocket.emit(EventType.GET_CAMERAS.toString().lowercase(),
                     Ack { args -> getCamerasCallback(args) })
             }
-            EventType.READ_FRAME -> {
-
+            EventType.READ_FRAMES -> {
+                mSocket.emit(EventType.READ_FRAMES.toString().lowercase())
             }
             EventType.AUTHENTICATE -> {
                 mSocket.emit(EventType.AUTHENTICATE.toString().lowercase(), event.body,
