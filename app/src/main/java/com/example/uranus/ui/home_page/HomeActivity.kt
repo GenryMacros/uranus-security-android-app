@@ -6,11 +6,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.Observer
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.example.uranus.R
 import com.example.uranus.databinding.ActivityHomeBinding
@@ -76,7 +73,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         authData = createAuthData()
         val intent1 = Intent(this, SocketService::class.java)
-        bindService(intent1, mConnection, Context.BIND_AUTO_CREATE);
+        bindService(intent1, mConnection, Context.BIND_AUTO_CREATE)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -119,19 +116,4 @@ class HomeActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
     }
-}
-
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
 }
