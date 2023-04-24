@@ -8,37 +8,28 @@ import android.os.Bundle
 import android.os.IBinder
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.uranus.R
 import com.example.uranus.databinding.ActivityHomeBinding
 import com.example.uranus.services.EventType
 import com.example.uranus.services.SocketEvent
 import com.example.uranus.services.SocketService
 import com.example.uranus.ui.home_page.data.AuthenticationData
-import com.example.uranus.ui.home_page.data.AuthenticationResponse
 import com.example.uranus.ui.home_page.data.GetCamerasResponse
 import com.example.uranus.ui.home_page.utility.CamsHandler
-import com.example.uranus.ui.login.LoginActivity
 import com.google.gson.Gson
-import io.socket.client.Ack
-import io.socket.client.IO
-import io.socket.client.Socket
-import io.socket.emitter.Emitter
-import org.json.JSONObject
 
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
-    private lateinit var camsHandler: CamsHandler;
-    private lateinit var authData: AuthenticationData;
-    private var gson = Gson();
-    private var mService: SocketService = SocketService();
+    private lateinit var camsHandler: CamsHandler
+    private lateinit var authData: AuthenticationData
+    private var gson = Gson()
+    private var mService: SocketService = SocketService()
     var mBound = false
 
     private val mConnection: ServiceConnection = object : ServiceConnection {

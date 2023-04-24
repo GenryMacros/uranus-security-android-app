@@ -4,42 +4,38 @@ import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.uranus.ui.home_page.data.AuthenticationData
 import com.example.uranus.ui.home_page.data.AuthenticationResponse
-import com.example.uranus.ui.home_page.data.GetCamerasResponse
 import com.example.uranus.ui.home_page.data.InvasionPayload
-import com.example.uranus.ui.invasions_page.data.FramesPayload
 import com.example.uranus.ui.invasions_page.utility.Notificator
 import com.google.gson.Gson
 import io.socket.client.Ack
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
-import kotlinx.coroutines.sync.Mutex
 import org.json.JSONObject
 
 
 class SocketService : Service() {
-    private var gson = Gson();
+    private var gson = Gson()
     private val mBinder: IBinder = SocketBinder()
-    private val _serverReceivedEvents = MutableLiveData<MutableList<SocketEvent>?>();
-    var serverReceivedEvents: LiveData<MutableList<SocketEvent>?> = _serverReceivedEvents;
-    private val _isAuthenticated = MutableLiveData<Boolean>();
-    var isAuthenticated: LiveData<Boolean> = _isAuthenticated;
+    private val _serverReceivedEvents = MutableLiveData<MutableList<SocketEvent>?>()
+    var serverReceivedEvents: LiveData<MutableList<SocketEvent>?> = _serverReceivedEvents
+    private val _isAuthenticated = MutableLiveData<Boolean>()
+    var isAuthenticated: LiveData<Boolean> = _isAuthenticated
     private var notificator: Notificator = Notificator(this)
 
-    private lateinit var mSocket: Socket;
-    private lateinit var authData: AuthenticationData;
+    private lateinit var mSocket: Socket
+    private lateinit var authData: AuthenticationData
 
     @Override
     override fun onCreate() {
     }
 
     fun connect(auth_data: AuthenticationData) {
-        authData = auth_data;
+        authData = auth_data
         if (!mSocket.connected()) {
             _serverReceivedEvents.postValue(mutableListOf<SocketEvent>())
             _isAuthenticated.postValue(false)
@@ -79,11 +75,11 @@ class SocketService : Service() {
 
     private var onAuthAsk = Emitter.Listener {
         mSocket.emit(EventType.AUTHENTICATE.toString().lowercase(), JSONObject(gson.toJson(authData)),
-            Ack { args -> authenticateCallback(args) });
+            Ack { args -> authenticateCallback(args) })
     }
 
     fun removeObservedEvent(event: SocketEvent) {
-        _serverReceivedEvents.value?.remove(event);
+        _serverReceivedEvents.value?.remove(event)
     }
 
     fun sendEvent(event: SocketEvent) {
@@ -97,7 +93,7 @@ class SocketService : Service() {
             }
             EventType.AUTHENTICATE -> {
                 mSocket.emit(EventType.AUTHENTICATE.toString().lowercase(), event.body,
-                    Ack { args -> authenticateCallback(args) });
+                    Ack { args -> authenticateCallback(args) })
             }
             else -> {}
         }
@@ -105,7 +101,7 @@ class SocketService : Service() {
 
     private fun getCamerasCallback(vararg args: Any) {
         val response: JSONObject = (args[0] as Array<Any>)[0] as JSONObject
-        val updated = _serverReceivedEvents.value;
+        val updated = _serverReceivedEvents.value
         updated?.add(SocketEvent(EventType.GET_CAMERAS, response))
         _serverReceivedEvents.postValue(updated)
     }
@@ -117,7 +113,7 @@ class SocketService : Service() {
         if (responseObj.success) {
             _isAuthenticated.postValue(true)
         } else {
-            val updated = _serverReceivedEvents.value;
+            val updated = _serverReceivedEvents.value
             updated?.add(SocketEvent(EventType.ERROR, null))
         }
     }
