@@ -17,6 +17,7 @@ import com.example.uranus.services.SocketService
 import com.example.uranus.ui.home_page.data.AuthenticationData
 import com.example.uranus.ui.home_page.data.GetCamerasResponse
 import com.example.uranus.ui.home_page.utility.CamsHandler
+import com.example.uranus.ui.statistic.StatisticActivity
 import com.google.gson.Gson
 
 
@@ -83,6 +84,10 @@ class HomeActivity : AppCompatActivity() {
 
         val statsButton = binding.stats
         val loadingBar = binding.loading
+
+        statsButton.setOnClickListener {
+            StatisticActivity.startActivity(this)
+        }
 
         camsHandler.isNeedRefresh.observe(this@HomeActivity, Observer {
             val isNeedRefresh = it ?: return@Observer

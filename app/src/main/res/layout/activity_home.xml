@@ -18,12 +18,12 @@
         android:backgroundTint="@color/login_text_color"
         android:backgroundTintMode="add"
         android:scaleType="fitXY"
-        android:tint="@color/login_text_color"
         app:layout_constraintBottom_toBottomOf="@+id/footer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cameras_text"
-        app:srcCompat="@android:drawable/bottom_bar" />
+        app:srcCompat="@android:drawable/bottom_bar"
+        app:tint="@color/login_text_color" />
 
     <ImageView
         android:id="@+id/footer"
@@ -34,12 +34,12 @@
         android:backgroundTint="@color/login_color"
         android:backgroundTintMode="add"
         android:scaleType="fitXY"
-        android:tint="@color/login_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/bottom_bar" />
+        app:srcCompat="@android:drawable/bottom_bar"
+        app:tint="@color/login_color" />
 
     <ImageView
         android:id="@+id/header"
@@ -51,12 +51,12 @@
         android:backgroundTint="@color/login_color"
         android:backgroundTintMode="add"
         android:scaleType="fitXY"
-        android:tint="@color/login_color"
         app:layout_constraintBottom_toTopOf="@+id/cameras_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/bottom_bar" />
+        app:srcCompat="@android:drawable/bottom_bar"
+        app:tint="@color/login_color" />
 
     <TextView
         android:id="@+id/cameras_text"
@@ -79,8 +79,7 @@
         android:layout_width="79dp"
         android:layout_height="57dp"
         android:layout_marginTop="434dp"
-        android:background="@drawable/profile"
-        android:backgroundTint="#FFFFFF"
+        android:background="@drawable/graph"
         android:backgroundTintMode="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
