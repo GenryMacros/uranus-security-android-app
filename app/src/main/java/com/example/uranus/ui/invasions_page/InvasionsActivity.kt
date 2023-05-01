@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
 import android.os.IBinder
+import android.text.Html
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -66,7 +67,7 @@ class InvasionsActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("ResourceAsColor", "SimpleDateFormat")
+    @SuppressLint("ResourceAsColor", "SimpleDateFormat", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val config = PRDownloaderConfig.newBuilder()
@@ -144,7 +145,18 @@ class InvasionsActivity : AppCompatActivity() {
                             intrudersView.setPadding(5, 15, 0, 0)
 
                             intrudersView.setTextColor(Color.parseColor("#000000"))
-                            intrudersView.text = ""
+                            var invaders = ""
+                            for (intruder in invasion.invaders!!) {
+                                if (intruder == "cat") {
+                                    invaders += "<font color=" + "#aca98a" + ">cat</font>"
+                                } else if (intruder == "person") {
+                                    invaders += "<font color=" + "#ed7370" + ">person</font>"
+                                } else {
+                                    invaders += "<font color=#ababab>$intruder</font>\n"
+                                }
+
+                            }
+                            intrudersView.text = Html.fromHtml(invaders)
                             intrudersView.textSize = 16F
 
                             val videoButtonHolder = LinearLayout(this)

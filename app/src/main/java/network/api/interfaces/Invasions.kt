@@ -20,7 +20,9 @@ data class InvasionIn(
     @SerializedName("link")
     val link: String? = null,
     @SerializedName("link_short")
-    val link_short: String? = null
+    val link_short: String? = null,
+    @SerializedName("invaders")
+    val invaders: List<String>? = null
 )
 
 data class InvasionGetResponse(

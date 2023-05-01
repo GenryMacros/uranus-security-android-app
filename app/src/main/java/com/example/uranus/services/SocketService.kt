@@ -50,7 +50,7 @@ class SocketService : Service() {
 
     override fun onBind(intent: Intent): IBinder {
         try {
-            mSocket = IO.socket("http://10.0.2.2:8086")
+            mSocket = IO.socket("http://192.168.0.107:8086")
 
         } catch (e: Exception) {
             e.printStackTrace()

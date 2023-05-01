@@ -45,7 +45,7 @@ class BroadcastActivity : AppCompatActivity() {
                             EventType.FRAMES -> {
                                 val responseObj: FramesPayload = gson.fromJson(event.body.toString(),
                                        FramesPayload::class.java)
-                                val byteArr = Base64.decode(responseObj.frames[camId].buffer, Base64.DEFAULT)
+                                val byteArr = Base64.decode(responseObj.frames[0].buffer, Base64.DEFAULT)
                                 val bmp: Bitmap = BitmapFactory.decodeByteArray(byteArr,
                                     0,
                                     byteArr.size)
