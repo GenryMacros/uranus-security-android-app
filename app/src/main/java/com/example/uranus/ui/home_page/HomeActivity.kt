@@ -18,6 +18,7 @@ import com.example.uranus.services.data.ReauthData
 import com.example.uranus.ui.home_page.data.AuthenticationData
 import com.example.uranus.ui.home_page.data.GetCamerasResponse
 import com.example.uranus.ui.home_page.utility.CamsHandler
+import com.example.uranus.ui.login.LoginActivity
 import com.example.uranus.ui.statistic.StatisticActivity
 import com.google.gson.Gson
 
@@ -90,6 +91,12 @@ class HomeActivity : AppCompatActivity() {
 
         val statsButton = binding.stats
         val loadingBar = binding.loading
+        val logOutButton = binding.logOut
+
+        logOutButton.setOnClickListener {
+            finish()
+            LoginActivity.startActivity(this)
+        }
 
         statsButton.setOnClickListener {
             StatisticActivity.startActivity(this, authData)

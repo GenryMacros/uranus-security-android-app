@@ -122,7 +122,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        tryLoginWithCachedCreds()
+        if (intent.getBooleanExtra("is_with_cache", true)) {
+            tryLoginWithCachedCreds()
+        } else {
+            cacheLoginData("", "")
+        }
     }
 
     private fun tryLoginWithCachedCreds() {
@@ -150,6 +154,7 @@ class LoginActivity : AppCompatActivity() {
     companion object {
         fun startActivity(context: Context) {
             val intent = Intent(context, LoginActivity::class.java)
+            intent.putExtra("is_with_cache", false)
             context.startActivity(intent)
         }
     }

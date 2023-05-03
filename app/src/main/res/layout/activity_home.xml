@@ -53,8 +53,10 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toTopOf="@+id/cameras_text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@android:drawable/bottom_bar"
         app:tint="@color/login_color" />
 
@@ -107,5 +109,16 @@
             android:layout_gravity="center"
             android:visibility="visible" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/logOut"
+        android:layout_width="42dp"
+        android:layout_height="35dp"
+        android:background="@drawable/exit"
+        app:layout_constraintBottom_toBottomOf="@+id/header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
