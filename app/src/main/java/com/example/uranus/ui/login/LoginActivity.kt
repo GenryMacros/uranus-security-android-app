@@ -37,6 +37,7 @@ class LoginActivity : AppCompatActivity() {
 
         val login = binding.login
         val signup = binding.signup
+        val stayLogged = binding.stayLogged
         username = binding.username
         password = binding.password
         loading = binding.loading
@@ -71,7 +72,9 @@ class LoginActivity : AppCompatActivity() {
             }
             else if (loginResult.success != null) {
                 setResult(Activity.RESULT_OK)
-                cacheLoginData( username.text.toString(), password.text.toString())
+                if (stayLogged.isEnabled) {
+                    cacheLoginData(username.text.toString(), password.text.toString())
+                }
                 val authData = HomeAuthData(
                     public_key = loginViewModel.loginResult.value?.public_key,
                     auth_token = loginViewModel.loginResult.value?.auth_token,
