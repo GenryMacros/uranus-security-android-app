@@ -11,7 +11,7 @@ import retrofit2.Response
 
 class StatisticsRepository {
     fun getStatistics(request_data: StatisticsGetOut, statisticsData: MutableLiveData<StatisticsData>,
-                      updatedData: MutableLiveData<Boolean>
+                      updatedData: MutableLiveData<Boolean>, updatedToken: MutableLiveData<String>
     ) {
         val apiRequestResult = MainServerApi.getApi()?.getInvasionStatistics(request_data)
         apiRequestResult?.enqueue(object: Callback<StatisticsGetResponse> {
@@ -28,7 +28,15 @@ class StatisticsRepository {
                 val responseObj = response.body()
                 if (responseObj != null) {
                     if (responseObj.reason != null) {
-                        statisticsData.value = StatisticsData(reason = responseObj.reason)
+                        if (responseObj.reason == "Token is expired") {
+                            reauth(RefreshRequest(
+                                id=request_data.client_id,
+                                token=request_data.auth_token,
+                                refresh=request_data.refresh
+                            ),updatedToken)
+                        } else {
+                            statisticsData.value = StatisticsData(reason = responseObj.reason)
+                        }
                     } else {
                         statisticsData.value = StatisticsData(
                             success = responseObj.success,
@@ -57,4 +65,23 @@ class StatisticsRepository {
             }
         })
     }
+
+    fun reauth(request_data: RefreshRequest, updatedToken: MutableLiveData<String>) {
+        val apiRequestResult = MainServerApi.getApi()?.refresh(request_data)
+        apiRequestResult?.enqueue(object: Callback<RefreshResponse> {
+            override fun onFailure(call: Call<RefreshResponse>, t: Throwable) {}
+            override fun onResponse(
+                call: Call<RefreshResponse>,
+                response: Response<RefreshResponse>
+            ) {
+                val responseObj = response.body()
+                if (responseObj != null) {
+                    if (responseObj.reason == null) {
+                        updatedToken.value = responseObj.jwt
+                    }
+                }
+            }
+        })
+    }
+
 }

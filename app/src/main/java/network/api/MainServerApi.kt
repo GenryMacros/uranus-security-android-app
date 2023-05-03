@@ -23,6 +23,9 @@ interface MainServerApi {
     @POST("/clients/signup")
     fun signup(@Body signupData: SignupDataRequest): Call<SignupResponse>
 
+    @POST("/clients/refresh")
+    fun refresh(@Body refreshData: RefreshRequest): Call<RefreshResponse>
+
     @GET("/clients/confirm")
     fun confirm(@Query("id") id: Int, @Query("token") token: String): Call<LoginResponse>
 

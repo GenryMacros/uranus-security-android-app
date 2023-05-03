@@ -1,5 +1,6 @@
 package com.example.uranus.ui.statistic
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -22,10 +23,13 @@ class StatisticActivity : AppCompatActivity() {
     private lateinit var lastInvasionText: TextView
     private lateinit var durationText: TextView
     private lateinit var statisticsViewModel: StatisticsViewModel
+    private lateinit var authData: AuthenticationData
 
+    @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStatisticBinding.inflate(layoutInflater)
+        authData = createAuthData()
         setContentView(binding.root)
 
         invasionsText = findViewById(R.id.invasions)
@@ -36,6 +40,12 @@ class StatisticActivity : AppCompatActivity() {
 
         statisticsViewModel = ViewModelProvider(this, StatisticViewModelFactory())
             .get(StatisticsViewModel::class.java)
+
+        statisticsViewModel.token.observe(this@StatisticActivity, Observer {
+            val token = it ?: return@Observer
+            authData.token = token
+            statisticsViewModel.getStatistic(authData, 1)
+        })
 
         statisticsViewModel.is_updated.observe(this@StatisticActivity, Observer {
             val invasionsData = statisticsViewModel.statisticsData.value
@@ -59,7 +69,7 @@ class StatisticActivity : AppCompatActivity() {
             finish()
         }
 
-        statisticsViewModel.getStatistic(createAuthData(), 1)
+        statisticsViewModel.getStatistic(authData, 1)
     }
 
     private fun createAuthData(): AuthenticationData {

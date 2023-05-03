@@ -7,7 +7,8 @@ data class StatisticsGetOut(
     val auth_token: String,
     val cam_id: Int,
     val client_id: Int,
-    val date: Int
+    val date: Int,
+    val refresh: String
 )
 
 

@@ -16,13 +16,20 @@ class StatisticsViewModel(private val statisticsRepository: StatisticsRepository
     private val _is_updated = MutableLiveData<Boolean>()
     val is_updated: LiveData<Boolean> = _is_updated
 
+    private val _token = MutableLiveData<String>()
+    val token: LiveData<String> = _token
+
     fun getStatistic(authData: AuthenticationData, camId: Int) {
         val requestData = StatisticsGetOut(
             auth_token=authData.token,
             client_id=authData.userId,
             cam_id=camId,
+            refresh=authData.refreshToken,
             date=0
         )
-        statisticsRepository.getStatistics(requestData, _statisticsData, _is_updated)
+        statisticsRepository.getStatistics(requestData,
+                                           _statisticsData,
+                                           _is_updated,
+                                           _token)
     }
 }

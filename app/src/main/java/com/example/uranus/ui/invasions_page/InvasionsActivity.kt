@@ -25,9 +25,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.downloader.*
 import com.example.uranus.R
 import com.example.uranus.databinding.ActivityInvasionsBinding
+import com.example.uranus.services.EventType
 import com.example.uranus.services.SocketService
+import com.example.uranus.services.data.ReauthData
 import com.example.uranus.ui.broadcast.BroadcastActivity
 import com.example.uranus.ui.home_page.data.AuthenticationData
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 
 
@@ -41,7 +44,7 @@ class InvasionsActivity : AppCompatActivity() {
     private lateinit var broadcastButton: Button
     private var camId: Int = 0
     private var mService: SocketService = SocketService()
-    private var downloadId: Int = 0
+    private var gson = Gson()
     var mBound = false
 
     private val mConnection: ServiceConnection = object : ServiceConnection {
@@ -54,7 +57,14 @@ class InvasionsActivity : AppCompatActivity() {
                 val events = it ?: return@Observer
                 events.forEach{
                         event -> run {
-
+                            when (event.type) {
+                                EventType.REAUTH_HAPPENED -> {
+                                    val reauthObj: ReauthData = gson.fromJson(event.body.toString(),
+                                        ReauthData::class.java)
+                                    authData.token = reauthObj.new_token
+                                }
+                                else -> {}
+                            }
                         }
                 }
                 events.clear()
@@ -101,8 +111,13 @@ class InvasionsActivity : AppCompatActivity() {
             BroadcastActivity.startActivity(this, camId)
         }
 
-        invasionsViewModel = ViewModelProvider(this, InvasionsViewModelFactory())
-            .get(InvasionsViewModel::class.java)
+        invasionsViewModel = ViewModelProvider(this, InvasionsViewModelFactory())[InvasionsViewModel::class.java]
+
+        invasionsViewModel.token.observe(this@InvasionsActivity, Observer {
+            val token = it ?: return@Observer
+            authData.token = token
+            invasionsViewModel.getInvasions(authData, camId)
+        })
 
         invasionsViewModel.is_updated.observe(this@InvasionsActivity, Observer {
             val invasionsData = invasionsViewModel.invasions.value
@@ -124,7 +139,7 @@ class InvasionsActivity : AppCompatActivity() {
                         run {
 
                             textSpacer = TextView(this)
-                            textSpacer.setText("")
+                            textSpacer.text = ""
                             val dateView = TextView(this)
                             dateView.layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                                 TableRow.LayoutParams.WRAP_CONTENT)
@@ -147,12 +162,16 @@ class InvasionsActivity : AppCompatActivity() {
                             intrudersView.setTextColor(Color.parseColor("#000000"))
                             var invaders = ""
                             for (intruder in invasion.invaders!!) {
-                                if (intruder == "cat") {
-                                    invaders += "<font color=" + "#aca98a" + ">cat</font>"
-                                } else if (intruder == "person") {
-                                    invaders += "<font color=" + "#ed7370" + ">person</font>"
-                                } else {
-                                    invaders += "<font color=#ababab>$intruder</font>\n"
+                                invaders += when (intruder) {
+                                    "cat" -> {
+                                        "<font color=" + "#aca98a" + ">cat</font>"
+                                    }
+                                    "person" -> {
+                                        "<font color=" + "#ed7370" + ">person</font>"
+                                    }
+                                    else -> {
+                                        "<font color=#ababab>$intruder</font>\n"
+                                    }
                                 }
 
                             }
@@ -207,20 +226,10 @@ class InvasionsActivity : AppCompatActivity() {
         PRDownloader.download(url, Environment.getExternalStorageDirectory().absolutePath, fileName)
             .setHeader("Accept-Encoding", "identity")
             .build()
-            .setOnStartOrResumeListener(object : OnStartOrResumeListener {
-                override fun onStartOrResume() {}
-            })
-            .setOnPauseListener(object : OnPauseListener {
-                override fun onPause() {}
-            })
-            .setOnCancelListener(object : OnCancelListener {
-                override fun onCancel() {}
-            })
-            .setOnProgressListener(object : OnProgressListener {
-                override fun onProgress(progress: Progress?) {
-
-                }
-            })
+            .setOnStartOrResumeListener { }
+            .setOnPauseListener { }
+            .setOnCancelListener { }
+            .setOnProgressListener { }
             .start(object : OnDownloadListener {
                 override fun onDownloadComplete() {
                     showVideo(context, Environment.getExternalStorageDirectory().absolutePath + '/' + fileName)
@@ -272,7 +281,7 @@ class InvasionsActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle("To Write to DB Allow Permissions")
                 .setMessage("On the Next Screen to Remove the App\n\nCheck Don't Ask Again and Click DENY\n\nOr Click ALLOW to Grant Permission")
-                .setPositiveButton("NEXT") { dialog, id ->
+                .setPositiveButton("NEXT") { _, _ ->
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), STORAGE_PERMISSION_CODE)
                 }
                 .create().show()

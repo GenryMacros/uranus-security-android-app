@@ -14,6 +14,7 @@ import com.example.uranus.databinding.ActivityHomeBinding
 import com.example.uranus.services.EventType
 import com.example.uranus.services.SocketEvent
 import com.example.uranus.services.SocketService
+import com.example.uranus.services.data.ReauthData
 import com.example.uranus.ui.home_page.data.AuthenticationData
 import com.example.uranus.ui.home_page.data.GetCamerasResponse
 import com.example.uranus.ui.home_page.utility.CamsHandler
@@ -55,6 +56,11 @@ class HomeActivity : AppCompatActivity() {
                                 if (responseObj.success) {
                                     camsHandler.setCamData(responseObj.cameras)
                                 }
+                            }
+                            EventType.REAUTH_HAPPENED -> {
+                                val reauthObj: ReauthData = gson.fromJson(event.body.toString(),
+                                    ReauthData::class.java)
+                                authData.token = reauthObj.new_token
                             }
                             else -> {}
                         }
