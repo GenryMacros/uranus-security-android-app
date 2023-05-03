@@ -157,17 +157,17 @@ class InvasionsActivity : AppCompatActivity() {
                             intrudersView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
 
                             intrudersView.gravity = Gravity.CENTER
-                            intrudersView.setPadding(5, 15, 0, 0)
+                            intrudersView.setPadding(5, 0, 0, 5)
 
                             intrudersView.setTextColor(Color.parseColor("#000000"))
                             var invaders = ""
                             for (intruder in invasion.invaders!!) {
                                 invaders += when (intruder) {
                                     "cat" -> {
-                                        "<font color=" + "#aca98a" + ">cat</font>"
+                                        "<font color=" + "#aca98a" + ">cat </font>"
                                     }
                                     "person" -> {
-                                        "<font color=" + "#ed7370" + ">person</font>"
+                                        "<font color=" + "#ed7370" + ">person </font>"
                                     }
                                     else -> {
                                         "<font color=#ababab>$intruder</font>\n"

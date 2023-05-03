@@ -3,12 +3,14 @@ package com.example.uranus.ui.login
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,17 +26,20 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var loading: ProgressBar
+    private lateinit var username: EditText
+    private lateinit var password: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val username = binding.username
-        val password = binding.password
         val login = binding.login
         val signup = binding.signup
-        val loading = binding.loading
+        username = binding.username
+        password = binding.password
+        loading = binding.loading
 
         login.isEnabled = false
 
@@ -66,6 +71,7 @@ class LoginActivity : AppCompatActivity() {
             }
             else if (loginResult.success != null) {
                 setResult(Activity.RESULT_OK)
+                cacheLoginData( username.text.toString(), password.text.toString())
                 val authData = HomeAuthData(
                     public_key = loginViewModel.loginResult.value?.public_key,
                     auth_token = loginViewModel.loginResult.value?.auth_token,
@@ -112,6 +118,30 @@ class LoginActivity : AppCompatActivity() {
                 SignupActivity.startActivity(this.context)
             }
         }
+
+        tryLoginWithCachedCreds()
+    }
+
+    private fun tryLoginWithCachedCreds() {
+        val prefs: SharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE)
+        val usern: String? = prefs.getString("username", "")
+        val pwd: String? = prefs.getString("password", "")
+        if (usern != null && pwd != null) {
+            if (usern.isNotEmpty() && pwd.isNotEmpty()) {
+                username.setText(usern)
+                password.setText(pwd)
+                loading.visibility = View.VISIBLE
+                loginViewModel.login(usern, pwd)
+            }
+        }
+    }
+
+    private fun cacheLoginData(username: String, password: String) {
+        val prefs = getSharedPreferences("UserData", MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putString("username", username)
+        editor.putString("password", password)
+        editor.apply()
     }
 
     companion object {
